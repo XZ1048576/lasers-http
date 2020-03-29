@@ -1,0 +1,201 @@
+/*html{
+    transform: scale(0.6);
+    transform-origin: top left;
+}*/
+html body{
+    margin: 0;
+}
+html body div#main{
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAABnRSTlMA/wD/AP83WBt9AAAACXBIWXMAAA7DAAAOwwHHb6hkAAABMElEQVR42u3dvQ3CMBCAUS/AYkxGzUysRA19Cv8Qi9h3z0pN8RROdvJJKR+rexUEsGBthFXirglYh198v55Rr064UmEKrNOE68VKy3Qga2ORqnhNwHrcb9deq2NdDvQHuIB31mZ/QzPLBQsWLFhb7dQWwlp/p+bOGtipmVkGPCxYabCiPoqZhpXhUUzAO8vMMuBhwYJ1Div5G9b6e9bSfHePaSAMiVo8/FCIqGhUNCoaFY2KxqZURaOiUdE4GzpIw4IFC5aKRkWjolHRmFmwYMFS0ahoVDQqGjMLFixYKhoVjYpGRaOiUdGoaFQ0KhqbUhWNikZF42zoIA0LFixYKhoVjYpGRWNmwYIFS0WjolHRqGjMLFiwYKloVDQqGhXN8OevspUzvhXmw2qwYMFKsL49wGkgRSOL2QAAAABJRU5ErkJggg==");
+    position: relative;
+    display: inline-block;
+}
+html body div#main div#jeu{
+    position: absolute;
+    margin: 300px;
+    top: 0;
+    left: 0;
+    background-color: white;
+}
+html body div#main div#jeu div.line{
+    height: 100px;
+    width: inherit;
+}
+html body div#main div#jeu div.line div.case{
+    height: 100px;
+    width: 100px;
+    position: relative;
+    display: inline-block;
+}
+html body div#main div#jeu div.line div.case div.laserhc{
+    position: absolute;
+    left: 45px;
+    top: 45px;
+    width: 10px;
+    height: 10px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAABnRSTlMAzgDtANwW3IwnAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAALElEQVR42mP4z8Bw7u0dXIgBKI1HBVQalwqENFYVKNKYKkiRJtdp+DyGJ1gAOBLTLfkXmIMAAAAASUVORK5CYII=");
+    transform: rotate(90deg);
+}
+html body div#main div#jeu div.line div.case div.laserbc{
+    position: absolute;
+    left: 45px;
+    top: 45px;
+    width: 10px;
+    height: 10px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAABnRSTlMAzgDtANwW3IwnAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAALElEQVR42mP4z8Bw7u0dXIgBKI1HBVQalwqENFYVKNKYKkiRJtdp+DyGJ1gAOBLTLfkXmIMAAAAASUVORK5CYII=");
+    transform: rotate(270deg);
+}
+html body div#main div#jeu div.line div.case div.lasergc{
+    position: absolute;
+    left: 45px;
+    top: 45px;
+    width: 10px;
+    height: 10px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAABnRSTlMAzgDtANwW3IwnAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAALElEQVR42mP4z8Bw7u0dXIgBKI1HBVQalwqENFYVKNKYKkiRJtdp+DyGJ1gAOBLTLfkXmIMAAAAASUVORK5CYII=");
+}
+html body div#main div#jeu div.line div.case div.laserdc{
+    position: absolute;
+    left: 45px;
+    top: 45px;
+    width: 10px;
+    height: 10px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAABnRSTlMAzgDtANwW3IwnAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAALElEQVR42mP4z8Bw7u0dXIgBKI1HBVQalwqENFYVKNKYKkiRJtdp+DyGJ1gAOBLTLfkXmIMAAAAASUVORK5CYII=");
+    transform: rotate(180deg);
+}
+html body div#main div#jeu div.line div.case div.laserh{
+    position: absolute;
+    left: 45px;
+    top: 0px;
+    width: 10px;
+    height: 45px;
+    background-color: #ff0000;
+}
+html body div#main div#jeu div.line div.case div.laserb{
+    position: absolute;
+    left: 45px;
+    top: 55px;
+    width: 10px;
+    height: 45px;
+    background-color: #ff0000;
+}
+html body div#main div#jeu div.line div.case div.laserg{
+    position: absolute;
+    left: 0px;
+    top: 45px;
+    width: 45px;
+    height: 10px;
+    background-color: #ff0000;
+}
+html body div#main div#jeu div.line div.case div.laserd{
+    position: absolute;
+    left: 55px;
+    top: 45px;
+    width: 45px;
+    height: 10px;
+    background-color: #ff0000;
+}
+html body div#main div#jeu div.line div.case div.feu{
+    width: 100px;
+    height: 100px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAA7DAAAOwwHHb6hkAAADrUlEQVR42u2dTY7UQAyF+wLcgCUSd+FSbFlzJq7DZiTWAUZqadRKKv55z3ZVGckrhD73+0gl0+WpPI7jeHTVqQ6hhXS1kB2E/PtzdI2LJuQM9ufXz9P6/fnL5d8xqyLXIkgkQtrYx4oMZBauRMxQhqWxqIBm5o6kUGWwwlmBeyXFLETa3LN+fPsEKQYXKUMqBSpE2xxKShQX9XlbiIHLuDpChVib867rq3HLCLGGsxoXIgTRnCWYFbluIajmtOGsym0hKwlBNycNh8VlPc1pPm8LaSEthCKE1dydlNW5LWRHIcf3r+8VHcyMXJMQrf1ng95wduDShXxsTtuk56bq4SKuDiuXKuSsuQghXq5VCIKrFuJtziLF+z/UGk4GN02Idn3dhUsRImmOEcwKXLgQaXPocFbhtpCZhfyvFsLlqgflkM2hwlmNKxayWzBTC7E2h1o+ZuLesVOF7HYPKS1kt59DWsiuQirIQH+nlCmlhbSQFlJKCHt/uhq3hbQQnhDPv6nC1WbhEsK+OryBZnPrCnl7vFfUwEAVbk0hz+beHmHLThVuuJBbKcBQ1OEkcyVSXEKudgyjhUjDyebeCaFt4SKFIB8Osrn1hLw0Fr4dmsy9k9JCWkgLSRFy+aEUQmj704nckRTYXNbVzGv01VF+UMEgBDr97nnC8gxIeKQwuXdLVgtZWYhl2Woh9zJayOpCRlJYoSC+XmdwLcsV5eCAFjIWAj044PWI2BaCE3J3VKzoEGXNsrWtEMcPg6ajxr07bksLMe59wIVo9rRRwUQMJKg2mRwTJu6z362DAshQTPveQUJGSxXl7HfrOI12QCJciGdfXNAX9ex3mhDnwEAWVyqDevb7KADvgIR1YCCLq5VR5mRrVDCzcEOFeI8y2kFI+NsRYIe2nIWi3A6txk15XQXqSKPVhEhzowmRilldiDYvuhCzlFEwwu+IsrmWrEKEWL+y9wRThbuGEOXSARNC4LYQxXmNEVzt23vChUCWD2MoWVyNoBYSLKTckmUZkECt41nc0vcQ91XiDCWL20JaSMCypdj0qcZNE+J9IeTloyjokZPBRb5X1y2E8YZO685gFreUEK8g1O+LZ3HRb55Ou4doBiQYwWRxywvR3Gij3mebJaOMEOvUCiKULO60Qlhve87mQoScDcllSpmd+yrCPf3OkJMVShZXOk4qHrZ+lYOQlLVcsLhn+WjmetVCpJK0dTWczC4015slRAiqtGP7s3PLC+lqIS2kq4VMV38BR27NpRyFtacAAAAASUVORK5CYII=");
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+html body div#main div#jeu div.line div.case div.killed{
+    width: 100px;
+    height: 100px;
+    background-image: url("data:image/gif;base64,R0lGODlhZABkABEAACH5BAkHAAMAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAZABkAIHO7dwAAAD/AADO7dwC/5yPqcvtDyMLstqLcaC5+y9tHEiWnzia6vqgKQvH7hvX5Uzbeobn+x/p+YDEhXBYTA6OSCWQ2XTqoFGpjGpVUjfZ4pbb/X3BYduYXIad0WnVmt0mveFxz5xe19yrecce3xf0xxeYMAhYOHFImLiImIjg+Ai5JMmYZzlZmKnZx9lZ9wnaJjpaVmrahZpqtcrq5PqaFCtLRFsrdns5q7truyoQLCwQCDw87Il6fIypvIwc5/oMnSY9LUxqfU18Grsd3O39Hab7zd3aO46evr3eG9AO+45yLT/v8qx1j+W1z//k79+OgFsAEoSS6yDCKQoFqmnocAXEglcmLmRhkaLEjHcRQXDUeONjxw4iQZ4oOfICSpM8VqYM4fIlhJgsK9CsKejmRQs6cfrpKVMBUJ9GhgY94IinLpiLlN7K2dTm0haWnNKiWlXq0wafrMbi2lXr1aJhmY41VMqrK6Go1K5C21bsV6Rr5datdBfq3K1mv07ta7SHW1QFAAAh+QQJBwACACwAAAAAZABkAIHO7dz/AADO7dwAAAAC/5SPqcvtDyMLstqLcaC5+y9tHEiWnzia6vqgKQvH7hvX5Uzbeobn+x/p+YDEhXBYTAqOSCWQ2XTqoFGpjGpVUjfZ4pbb/X3BYduYXIad0WnVmt0mveFxz5xe19yrecce3xf0xxeYMAhYOHFImLiImIjg+Ai5JMmYZzlZmKnZx9lZ9wnaJjpaVmrahZpqtcrq5PqaFCtLRFsrdns5q7tr2+ubC+wJjKtWbLyCLBK3zJzm/BwWLZ1FXS11ja2lndzRvf0LHgwyHr5jfm6W7h3C3g7xrs4iP+9WD6+IT+6+zx/vL1+kgAINELT37aBAhQgvMGxY4SFEQRL/Hag40Q9GY1wbMxrpWAukx4Eig5UcWenkLpUeWWZ0OdGRhV79Ds3URXHRzVsAJe2k1SLTz1gahUbEqc9oTaIfPw111dTpUZ6GUD1dVdXqVKAXoW5lmhLrV69Ul0JFavbkVVQFAAAh/hxBbmltYXRpb24gUGhvdG9GaWx0cmUgU3R1ZGlvADs=");
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+html body div#main div#jeu div.line div.case div.bois{
+    width: 100px;
+    height: 100px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAABnRSTlMA/wD/AP83WBt9AAAACXBIWXMAAA7DAAAOwwHHb6hkAAABMElEQVR42u3dvQ3CMBCAUS/AYkxGzUysRA19Cv8Qi9h3z0pN8RROdvJJKR+rexUEsGBthFXirglYh198v55Rr064UmEKrNOE68VKy3Qga2ORqnhNwHrcb9deq2NdDvQHuIB31mZ/QzPLBQsWLFhb7dQWwlp/p+bOGtipmVkGPCxYabCiPoqZhpXhUUzAO8vMMuBhwYJ1Div5G9b6e9bSfHePaSAMiVo8/FCIqGhUNCoaFY2KxqZURaOiUdE4GzpIw4IFC5aKRkWjolHRmFmwYMFS0ahoVDQqGjMLFixYKhoVjYpGRaOiUdGoaFQ0KhqbUhWNikZF42zoIA0LFixYKhoVjYpGRWNmwYIFS0WjolHRqGjMLFiwYKloVDQqGhXN8OevspUzvhXmw2qwYMFKsL49wGkgRSOL2QAAAABJRU5ErkJggg==");
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+html body div#main div#jeu div.line div.case div.mirroir{
+    width: 100px;
+    height: 100px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAABnRSTlMA/wD/AP83WBt9AAAACXBIWXMAAA7DAAAOwwHHb6hkAAABdUlEQVR42u3dO27AMAwE0bn/pR0EuQCJSDY/w8qNm9fJWq55nMDwN0JEpcSKS/0+yxGUEishJVZCSqyElFgJKbESUmIlpMRKSImVkBIrISXWkzr2oVT8gIxSiVeUEuu81Eas/3zIQymxzkstwjryGR2lxDovNR/r7CUWSon13LgYRanVWPcu21FqKdbtAAdKrcN6JxSEUouw3gyaodQKrPfDiyg1HOurQCxKjcX6NmSNUgOxKgT3UWoUVp1lEJQaglVtwQil2mPVXFpDqcZYlRchUaolVv3lWpRqhtVlYRul2mD1KgFAqQZYHYslUKo0Vt+yEpQqitW9AAelymHNKFVCqUJYk4q6UKoE1rzyN5T6GGtqoSBKfYY1u6QSpT7A2lB8ilKvYu0p00Wpl7C2FTSj1HWsnaXfKHURa3ORPEpdwfLnBCh1GEupKJZSUSylolhKRbGUimIpFcVSKoqlVBRLqSiWUlEspaJYSmUPyEqFsYSIzA8S+0buqQeqkwAAAABJRU5ErkJggg==");
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+html body div#main div#jeu div.line div.case div.mirroirt{
+    width: 100px;
+    height: 100px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAABnRSTlMA/wD/AP83WBt9AAAACXBIWXMAAA7DAAAOwwHHb6hkAAABdUlEQVR42u3dO27AMAwE0bn/pR0EuQCJSDY/w8qNm9fJWq55nMDwN0JEpcSKS/0+yxGUEishJVZCSqyElFgJKbESUmIlpMRKSImVkBIrISXWkzr2oVT8gIxSiVeUEuu81Eas/3zIQymxzkstwjryGR2lxDovNR/r7CUWSon13LgYRanVWPcu21FqKdbtAAdKrcN6JxSEUouw3gyaodQKrPfDiyg1HOurQCxKjcX6NmSNUgOxKgT3UWoUVp1lEJQaglVtwQil2mPVXFpDqcZYlRchUaolVv3lWpRqhtVlYRul2mD1KgFAqQZYHYslUKo0Vt+yEpQqitW9AAelymHNKFVCqUJYk4q6UKoE1rzyN5T6GGtqoSBKfYY1u6QSpT7A2lB8ilKvYu0p00Wpl7C2FTSj1HWsnaXfKHURa3ORPEpdwfLnBCh1GEupKJZSUSylolhKRbGUimIpFcVSKoqlVBRLqSiWUlEspaJYSmUPyEqFsYSIzA8S+0buqQeqkwAAAABJRU5ErkJggg==");
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(90deg);
+}
+html body div#main div#jeu div.line div.case div.cible{
+    width: 100px;
+    height: 100px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH4wUaBwQKKrbBmAAAAgBJREFUeNrt3b1qwlAchvE3rQgSREQKxcGpi5PQC3B1cs8NiEtnwal0Epy7FG8gu5OrF1BwcunkIIKIFBFBlHap4FQ/Yk3+zfNMLjlofj35Uk4dSV+ykSNJ77OPkzZ6zD3sXpr4nDciQAgQQAgQQAgQQAiQWOdYu1MPEHfqBAggBAggxFUWM4QAIUAAIUAAIUAAIUAAIUAIEEAIEEAIEEAIEEAIEAIEEALEagmrb9yruqqUUyoVk7q/u5UkTaZbDYZr9for+d2lyc9l7odyXtVVo55RIf/739JovFH77dMcjHOBMa4G2mpkVfPSJ23T8Rdqtudm9qmZc8g5GJJU89JqNbJ2ziHHrh2yt2ZIKIepczD2UQbDdaiHr2P3s4kZ0qhnIjEGl70/s+PQCfyYCvmEvKoLSNAq5VQkx4otSKmYjORYsQXZ3fRFbazYgsStyINMpttIjhVbkMFwHcmxYgvS668iOVZsQfzuUqPxJvA4o/HGxINGEw8Xvaqr15dcoDGenmfXAvn/Dxf97lIdf3H29h1/YeYxvJnL3mZ7fhZKCI/fA08vvqAC5DIwfIVLnEMAIUAIEEAIEEAIEEAIEEAIEAIEEAIEEAIEEAIEEAKEAAGEDmVprRP+0ycBAgi7ABAChKusP+vYVXV2hbmKETOEQxYBAggBAggBQoAAQif3DSrWinKqTTK+AAAAAElFTkSuQmCC");
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+html body div#main div#jeu div.line div.case div.joueur{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: 100px;
+}
+html body div#main div#jeu div.line div.case div.move_obj{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: 100px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH4wUZDholSEJXfwAAAxZJREFUeNrtnU2O7CAQg4mVs7773yBvNVKr1QkQ/mxTsxnNhrL9kQkJdPVxpfQvGfwc6UpXOuQ94EiXBYzP38oe4GLk7m81D3AxogrlWytcjChC+aURLkbUoNxpg4sRJShPmuBiRAVKTgtcjChAKdEAFyPsUEprw8UIM5SamnAxwgqlthZcjDBCeVMDLkbY6rwdGy5GmOq1jAkXIyx1W8c6W4v33IMoGavW8Mw9kh5goTqrXd4idAcSUPr6B6OoXWF0BbIjlBF+oSByFxhDgOwAZaQ/KIp2hTEUiCOUGX7gYMIFxhQgDlBm6oejKWXdcDanqBc7mFTSiZ3MKujDjqaZdWFn84x6ECFw6WgC0ms3bnUYTFcqVsNYHUrvuq25nAwwPsPJjd2z9qhJcKVj3jGg0YcGHM5kteQEJhizwpoF/U1eYIMxOrTZ96ra3MAIY1R4qxYONfmBFUbvEFcvbUtzBDOMXmGyPGeU5Al2GK2hsr2eyeV6tsKY+YBYe5a4BMaKiff0nAL2K+PtjGd/xX+XM5RglIatsgn2K2+owciFrrZN/J07FGHcha96kOIzfzg0/VKG8Q3FpoGZ+sT6gwKn2WXR4s/p/6/D/VC2gdlT+MorRskGZiWhqz5TyTUwqwlb8a3D2bpyYd/wye1vrzrkUNXij/VKeTvjld5cSzQw6xGqyt4OfQOznmEq7H5SNzAbESL7+QDaBmYjw2M+QUPZwGxGaKxnzOgamM0Mi/EU5tlSbISh3Ji9+2W1nMMdMWmxoijbDZfpJP/yD+ywLElZPuuCgMGlAxEClx4EDC5dCBhc+hAwuHQiYHDpRcDg0o2AwaUfAYPLBwIGlx8EDC5fCBhc/hAwuHwiYHD5RcDg8o2AweUfAYMLyskCY2Wzmd7fo7VsC3f2F4KprJRaxoSLEbZ6UxqYMRthrDO0gRm7EdYrcUgDMwUjzPeqrg3MVIywL8+7NDBTMqLwrNTUwEzNiMqDa04LXIwovUV40gQXIyoectrgYkTJw5NGuBhR83CnFS5GFD380gwXI6oevrXDxYhLA7P/akBgSBXqqBcAAAAASUVORK5CYII=");
+}
+html body div#left{
+    display: inline-block;
+    position: absolute;
+}
+html body div#left div#scores div.score{
+    height: 100px;
+    width: 300px;
+    position: relative;
+}
+html body div#left div#scores div.score div.pseudo{
+    text-align: left;
+    font-size: 30px;
+    height: 30px;
+    position: absolute;
+    top:35px;
+    left:10px;
+
+}
+html body div#left div#scores div.score div.cash{
+    text-align: right;
+    font-size: 30px;
+    height: 30px;
+    position: absolute;
+    top:35px;
+    right:45px;
+}
+html body div#left div#scores div.score div.piece{
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    background-color: gold;
+    position: absolute;
+    top: 35px;
+    right: 10px;
+}
+html body div#win{
+    text-align: center;
+    font-size: 50px;
+}

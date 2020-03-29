@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lasers</title>
+        <style>
+            html body div#joueurs div.joueur{
+                width: 300px;
+                height: 100px;
+                font-size: 30px;
+                text-align: center;
+                margin-top: 35px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Partie rapide</h1>
+        <p>En attente d'autres joueurs</p>
+        <div id="joueurs"></div>
+        <script>
+            const Player="##player##";
+            let checksum=0;
+            function wait(){
+                fetch("/wait?partie=auto&player="+Player+"&checksum="+checksum).catch(wait).then(reponse => {
+                    if(reponse.headers.get("Type")=="changelist"){
+                        reponse.text().then(text => {
+                            checksum=text.split("!")[1]
+                            document.getElementById("joueurs").innerHTML="";
+                            text.split("!")[0].split("\\").forEach(joueur => {
+                                let ctn='<div style="background-color: ';
+                                ctn+=joueur.split("@")[1];
+                                ctn+='" class="joueur">';
+                                ctn+=joueur.split("@")[0];
+                                ctn+="</div>";
+                                document.getElementById("joueurs").innerHTML+=ctn;
+                            });
+                            wait();
+                        });
+                    } else {
+                        reponse.text().then(name => {
+                            document.location="/?partie="+name+"&player="+Player;
+                        });
+                    }
+                });
+            }
+            wait();
+        </script>
+    </body>
+</html>

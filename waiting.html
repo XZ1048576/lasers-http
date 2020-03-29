@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lasers</title>
+        <style>
+            html body div#joueurs div.joueur{
+                width: 300px;
+                height: 100px;
+                font-size: 30px;
+                text-align: center;
+                margin-top: 35px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Partie personnalis&eacute;e</h1>
+        <p>
+            Pour inviter un ami sur cette partie, envoyez lui ce code: <span id="partie"></span>
+        </p>
+        <div id="joueurs"></div>
+        <button id="start" style="display: none">Commencer</button>
+        <script>
+            const Partie="##partie##";
+            const Player="##player##";
+            document.getElementById("partie").innerText=Partie;
+            document.location.search.split("?")[1].split("&").forEach(param => {
+                if(param==="partie=new"){
+                    document.getElementById("start").style.display="inline-block"
+                    document.getElementById("start").onclick=function(){
+                        fetch("/start?partie="+Partie+"&player="+Player);
+                    }
+                }
+            });
+            let checksum="0";
+            function wait(){
+                fetch("/wait?partie="+Partie+"&player="+Player+"&checksum="+checksum).catch(wait).then(reponse => {
+                    if(reponse.headers.get("Type")=="changelist"){
+                        reponse.text().then(text => {
+                            checksum=text.split("!")[1]
+                            document.getElementById("joueurs").innerHTML="";
+                            text.split("!")[0].split("\\").forEach(joueur => {
+                                let ctn='<div style="background-color: ';
+                                ctn+=joueur.split("@")[1];
+                                ctn+='" class="joueur">';
+                                ctn+=joueur.split("@")[0];
+                                ctn+="</div>";
+                                document.getElementById("joueurs").innerHTML+=ctn;
+                            });
+                            wait();
+                        });
+                    } else {
+                        document.location="/?partie="+Partie+"&player="+Player;
+                    }
+                });
+            }
+            wait();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Lasers</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div id="win" style="display: none">Le/la joueuxe <span id="winner_pseudo"></span> a gagn&eacute; !!!</div>
+		<div id="main">
+			<div id="jeu"></div>
+		</div>
+		<div id="left">
+			<div id="scores"></div>
+			<div id="control">
+				<table>
+					<tr>
+						<td><img src="turn.png" id="turn left"/></td>
+						<td><img src="move.png" id="up"/></td>
+						<td><img src="turn.png" style="transform: scaleX(-1)" id="turn right"/></td>
+					</tr>
+					<tr>
+						<td><img src="move.png" style="transform: rotate(270deg)" id="left"/></td>
+						<td><img src="move.png" style="transform: rotate(180deg)" id="down"/></td>
+						<td><img src="move.png" style="transform: rotate(90deg)" id="right"/></td>
+					</tr>
+				</table>
+				<img src="fire.png" id="fire">
+			</div>
+			<div id="bonus">
+				<table>
+					<tr>
+						<td><img src="add_mirror.png" id="add_mirror"/></td>
+						<td><img src="del_mirror.png" id="del_mirror"/></td>
+					</tr>
+					<tr>
+						<td><img src="move_mirror.png" id="move_mirror"/></td>
+						<td><img src="turn_mirror.png" id="turn_mirror"/></td>
+					</tr>
+					<tr>
+						<td><img src="move_cible.png" id="move_cible"/></td>
+						<td><img src="2play.png" id="2play"/></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<script src="/script.js?partie=##partie##&player=##player##"></script>
+	</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lasers</title>
+    </head>
+    <body>
+        <h1>Lasers</h1>
+        <div>
+            Pseudo:<input id="pseudo"/>
+        </div>
+        <div>
+            Couleur:<input id="color" type="color"/>
+        </div>
+        <div>
+            Partie:<select id="type">
+                <option value="alea">Partie rapide</option>
+                <option value="perso">Cr&eacute;er une partie personalis&eacute;e</option>
+                <option value="rej">Rejoindre une partie personalis&eacute;e</option>
+            </select>
+        </div>
+        <div id="alea">
+            <h2>Partie Rapide</h2>
+            <button id="alea_start">D&eacute;marer</button>
+            <script>
+                document.getElementById("alea_start").onclick=function(){
+                    let url="/?partie=auto&pseudo=";
+                    url+=document.getElementById("pseudo").value;
+                    url+="&color=";
+                    url+=document.getElementById("color").value.slice(1,7);
+                    document.location=url;
+                }
+            </script>
+        </div>
+        <div id="perso">
+            <h2>Cr&eacute;er une partie personalis&eacute;e</h2>
+            <input type="file" id="file"/><br/>
+            <button id="perso_create">Cr&eacute;er</button>
+            <script>
+                document.getElementById("perso_create").onclick=function(){
+                    let url="/?partie=new&pseudo=";
+                    url+=document.getElementById("pseudo").value;
+                    url+="&color=";
+                    url+=document.getElementById("color").value.slice(1,7);
+                    if(document.getElementById("file").files[0]){
+                        const Http=new XMLHttpRequest();
+                        var reader=new FileReader();
+                        Http.onreadystatechange=function(){
+                            if(Http.readyState===4){
+                                if(Http.status===200){
+                                    url+="&map=";
+                                    url+=Http.responseText;
+                                    document.location=url;
+                                } else if(Http.status===422){
+                                    alert("Le fichier fourni n'est pas valide.<br/><a href=\"/map_creator.exe\">Cliquez ici</a> pour télécharger le programme de création de map.")
+                                }
+                            }
+                        }
+                        reader.onload=function(e){
+                            Http.open("POST","/perso_map");
+                            Http.send(e.target.result);
+                        }
+                        reader.readAsText(document.getElementById("file").files[0]);
+                    }else{
+                        document.location=url;
+                    }
+                }
+            </script>
+        </div>
+        <div id="rej">
+            <h2>Rejoindre une partie personalis&eacute;e</h2>
+            <input id="rej_gamename"/>
+            <button id="rej_start">Rejoindre</button>
+            <script>
+                document.getElementById("rej_start").onclick=function(){
+                    let url="/?partie=rej_";
+                    url+=document.getElementById("rej_gamename").value;
+                    url+="&pseudo=";
+                    url+=document.getElementById("pseudo").value;
+                    url+="&color=";
+                    url+=document.getElementById("color").value.slice(1,7);
+                    document.location=url;
+                }
+            </script>
+        </div>
+        <script>
+            ["alea","perso","rej"].forEach(element => {
+                document.getElementById(element).style.display="none"
+            })
+            document.getElementById(document.getElementById("type").value).style.display="block"
+            document.getElementById("type").onchange=function(){
+                ["alea","perso","rej"].forEach(element => {
+                    document.getElementById(element).style.display="none"
+                })
+                document.getElementById(document.getElementById("type").value).style.display="block"
+            };
+        </script>
+    </body>
+</html>

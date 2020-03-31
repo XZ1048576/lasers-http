@@ -62,7 +62,55 @@ int main(void){
                 case SDL_MOUSEBUTTONDOWN:
                     if(event.button.button==SDL_BUTTON_LEFT){
                         if(full_window.h-event.button.y<100){ //bande grise du bas
-                            //todo
+                            if(full_window.h-event.button.y<50 && event.button.x<200 && selectedx!=-1){ //buttons en bas a gauche
+                                if(event.button.x<50){                        //1er button
+                                    if(selectedx==map.width){                     //une ligne est selectionnee->insertion au dessus
+
+                                    }else if(selectedy==map.height){              //une colonne est selectionnee->insertion a gauche
+
+                                    }else{                                        //une case est selectionnee->on remplace par une case vide ou par du bois si elle est deja vide
+                                        if(Map_GetAt(map,selectedx,selectedy)==1){
+                                            Map_SetAt(map,selectedx,selectedy,0);
+                                        }else{
+                                            Map_SetAt(map,selectedx,selectedy,1);
+                                        }
+                                    }
+                                }else if(event.button.x<100){                 //2e button
+                                    if(selectedx==map.width){                     //une ligne est selectionnee->suppression
+
+                                    }else if(selectedy==map.height){              //une colonne est selectionnee->suppression
+
+                                    }else{                                        //une case est selectionnee->on replace par du bois ou un mirroir si elle c'est du bois ou une case vide
+                                        if(Map_GetAt(map,selectedx,selectedy)<2){
+                                            Map_SetAt(map,selectedx,selectedy,2);
+                                        }else{
+                                            Map_SetAt(map,selectedx,selectedy,0);
+                                        }
+                                    }
+                                }else if(event.button.x<150){                 //3e button
+                                    if(selectedx==map.width){                     //une ligne est selectionnee->insertion au dessous
+
+                                    }else if(selectedy==map.height){              //une colonne est selectionnee->insertion a droite
+
+                                    }else{                                        //une case est selectionnee->on remplace par la cible ou par un mirroir si c'est la cible ou un joueur
+                                        if(Map_GetAt(map,selectedx,selectedy)<4){
+                                            Map_SetAt(map,selectedx,selectedy,4);
+                                        }else{
+                                            Map_SetAt(map,selectedx,selectedy,2);
+                                        }
+                                    }
+                                }else{                                        //4e button
+                                    if(selectedx==map.width){                     //une ligne est selectionnee->nada
+                                    }else if(selectedy==map.height){              //une colonne est selectionnee->nada
+                                    }else{                                        //une case est selectionnee->on remplace par un joueur ou par la cible si elle est deja vide
+                                        if(Map_GetAt(map,selectedx,selectedy)<5){
+                                            Map_SetAt(map,selectedx,selectedy,5);
+                                        }else{
+                                            Map_SetAt(map,selectedx,selectedy,4);
+                                        }
+                                    }
+                                }
+                            }
                         } else if(full_window.w-event.button.x<100){ //bande gise de droite
                             //todo
                         } else{
@@ -79,7 +127,7 @@ int main(void){
                             if(y>map.height){
                                 y=map.height;
                             }
-                            if(x==selectedx && y==selectedy){ //objet deja selectionné -> deselection
+                            if(x==selectedx && y==selectedy){ //objet deja selectionne -> deselection
                                 selectedx=-1;
                                 selectedy=-1;
                             } else {
@@ -120,9 +168,9 @@ int main(void){
         SDL_Rect dest;
         if(selectedx<map.width && selectedy<map.height){ // une case est slelctionnee
             dest=(SDL_Rect){selectedx*zoom-camerax,selectedy*zoom-cameray,zoom,zoom};
-        } else if(selectedx<map.width){ // une colonne est selectionnee
+        } else if(selectedx<map.width && selectedy==map.height){ // une colonne est selectionnee
             dest=(SDL_Rect){selectedx*zoom-camerax,-cameray,zoom,zoom*map.height};
-        } else if(selectedy<map.height){ // une ligne est selectionnee
+        } else if(selectedx==map.width && selectedy<map.height){ // une ligne est selectionnee
             dest=(SDL_Rect){-camerax,selectedy*zoom-cameray,zoom*map.width,zoom};
         }
         SDL_RenderCopy(renderer,texture,&selected,&dest);
@@ -136,6 +184,36 @@ int main(void){
         dest.x=full_window.w-100;
         dest.w=100;
         SDL_RenderCopy(renderer,texture,&gray,&dest); // bande grise droite
+        //affichage des boutons
+        if(selectedx==-1 && selectedy==-1){
+            //on ne fait rien si aucune case n'est selectionnee
+        } else if(selectedx==map.width){ // une ligne est selectionnee
+            //todo
+        } else if(selectedy==map.height){ //une colonne est selectionnee
+            //todo
+        } else { //une case est selectionnee
+            UINT8 value=Map_GetAt(map,selectedx,selectedy);
+            dest=(SDL_Rect){0,full_window.h-50,50,50};
+            if(value!=1){
+                SDL_RenderCopy(renderer,texture,images+1,&dest);
+                dest.x+=50;
+            }
+            if(value!=0){
+                SDL_RenderCopy(renderer,texture,images,&dest);
+                dest.x+=50;
+            }
+            if(value!=2 && value!=3){
+                SDL_RenderCopy(renderer,texture,images+2,&dest);
+                dest.x+=50;
+            }
+            if(value!=4){
+                SDL_RenderCopy(renderer,texture,images+4,&dest);
+                dest.x+=50;
+            }
+            if(value<5){
+                SDL_RenderCopy(renderer,texture,images+5,&dest);
+            }
+        }
         SDL_RenderPresent(renderer);
     }
     return 0;

@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <sfd/sfd.h>
 #include <stdio.h>
 #include <stdlib.h>
 typedef unsigned char UINT8;
@@ -26,6 +27,7 @@ int main(void){
     SDL_Surface* surface=SDL_CreateRGBSurface(0,300,300,32,0xff000000,0x00ff0000,0x0000ff00,0x000000ff);
     surface->pixels=pixels;
     SDL_Texture* texture=SDL_CreateTextureFromSurface(renderer,surface);
+    char* filename=NULL;
     SDL_Rect selected={100,0,1,1};
     SDL_Rect black={100,100,1,1};
     SDL_Rect gray={100,1,1,1};
@@ -154,6 +156,74 @@ int main(void){
                     }else if(zoom>200){
                         zoom=200;
                     }
+                    break;
+                case SDL_KEYDOWN:;
+                    sfd_Options opt;
+                    switch(event.key.keysym.sym){
+                        case SDLK_o: //ouvrir un fichier
+                            opt=(sfd_Options){
+                                .title       = "Open map",
+                                .filter_name = "Text File",
+                                .filter      = "*.txt"
+                            };
+                            char* new_filename=sfd_open_dialog(&opt);
+                            if(new_filename){
+                                filename=new_filename;
+                                FILE* map_file = fopen(filename,"r");
+                                int length=0;
+                                while(!feof(map_file)){
+                                    char c;
+                                    fread(&c,1,1,map_file);
+                                    length++;
+                                }
+                                fseek(map_file,0,SEEK_SET);
+                                char* map_txt=malloc(length+1);
+                                map_txt[length]=0;
+                                fread(map_txt,1,length,map_file);
+                                fclose(map_file);
+                                Map new_map=Map_Create(map_txt);
+                                if(new_map.data!=NULL){
+                                    Map_delete(map);
+                                    map=new_map;
+                                }
+                            }
+                            break;
+                        case SDLK_s: //enregistrer
+                            if(filename==NULL){
+                                opt=(sfd_Options){
+                                    .title       = "Save map",
+                                    .filter_name = "Text File",
+                                    .filter      ="*.txt"
+                                };
+                                filename=sfd_save_dialog(&opt);
+                                if(filename==NULL){
+                                    break;
+                                }
+                            }
+                        Saving:
+                            printf("saving to %s\n",filename);
+                            char* map_txt=Map_export(map);
+                            printf("file data is %s\n",map_txt);
+                            FILE* map_file=fopen(filename,"w");
+                            for(int i=0;map_txt[i];i++){
+                                fwrite(map_txt+i,1,1,map_file);
+                            }
+                            fclose(map_file);
+                            break;
+                        case SDLK_F12:; //enregistrer sous
+                            opt=(sfd_Options){
+                                .title       = "Save map as",
+                                .filter_name = "Text File",
+                                .filter      = "*.txt"
+                            };
+                            new_filename=sfd_save_dialog(&opt);
+                            if(new_filename){
+                                filename=new_filename;
+                                goto Saving;
+                            }
+                            break;
+                    }
+                    break;
             }
         }
         if(map.width*zoom-camerax+100<full_window.w){

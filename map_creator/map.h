@@ -19,6 +19,9 @@ void Map_SetAt(Map map,int x,int y,UINT8 value){
     *value_to_change=((*value_to_change&mask)|value);
     return;
 }
+void Map_delete(Map map){
+    free(map.data);
+}
 void Map_insert_col(Map *map,int x){
     if(map->width==255){
         return;
@@ -206,5 +209,18 @@ Map Map_Create(char* map){
             j++;
         }
     }
+    return result;
+}
+char* Map_export(Map map){
+    char* result=malloc((map.width+1)*map.height+2);
+    for(int y=0;y<map.height;y++){
+        for(int x=0;x<map.width;x++){
+            result[x+y*(map.width+1)]=0x30|Map_GetAt(map,x,y);
+        }
+        result[(y+1)*(map.width+1)-1]='#';
+    }
+    result[(map.width+1)*map.height-1]='!';
+    result[(map.width+1)*map.height]=0x30|map.default_;
+    result[(map.width+1)*map.height+1]=0;
     return result;
 }

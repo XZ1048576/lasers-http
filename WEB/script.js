@@ -1,6 +1,12 @@
 let waits=0;
 const partie="##partie##";
 const PLAYER="##player##";
+window.addEventListener("resize",function(){
+    document.getElementById("main-scroll").style.maxWidth=(window.innerWidth-300)+"px";
+    document.getElementById("main-scroll").style.maxHeight=window.innerHeight+"px";
+},true);
+document.getElementById("main-scroll").style.maxWidth=(window.innerWidth-300)+"px";
+document.getElementById("main-scroll").style.maxHeight=window.innerHeight+"px";
 document.getElementById("control").onclick=function(target){
     let key=null;
     switch(target.target.id){
@@ -189,7 +195,6 @@ function wait(){
             let width=lines[0].split("@").length;
             document.getElementById("jeu").style="height:"+(100*height)+"px;width:"+(100*width)+"px;";
             document.getElementById("main").style="height:"+(100*height+600)+"px;width:"+(100*width+600)+"px;";
-            document.getElementById("left").style="height:"+(100*height+600)+"px;"
             document.getElementById("jeu").innerHTML="";
             lines.forEach(line => {
                 let line_html='<div class="line">';

@@ -52,16 +52,17 @@ document.getElementById("bonus").onclick=function(target){
             document.getElementById("jeu").onmousedown=function(click){
                 no=0;
                 if(click.button==0){
-                    x=Number.parseInt(click.pageX/100)-3;
-                    y=Number.parseInt(click.pageY/100)-3;
+                    x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
+                    y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
                     dir=0;
                 } else if(click.button==2){
-                    x=Number.parseInt(click.pageX/100)-3;
-                    y=Number.parseInt(click.pageY/100)-3;
+                    x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
+                    y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
                     dir=1;
                 } else {
                     no=6;
                 }
+                console.log(x,y,dir,no);
                 if(no!=6){
                     fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
                         if(reponse.status===409){
@@ -201,7 +202,6 @@ function wait(){
                 line.split("@").forEach(Case => {
                     line_html+='<div class="case">';
                     Case.split("&").forEach(Element => {
-                        console.log(Element);
                         if(Element.startsWith("joueur")){
                             line_html+='<div class="joueur" style="transform: rotate('+Element.split("_")[1]+'deg);background-image: url(\'player.svg?color='+Element.split("_")[2]+'\')"></div>';
                         } else if(Element.startsWith("killed")){

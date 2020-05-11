@@ -79,8 +79,8 @@ document.getElementById("bonus").onclick=function(target){
         case "del_mirror":
             document.getElementById("jeu").onclick=function(click){
                 no=1;
-                x=Number.parseInt(click.pageX/100)-3;
-                y=Number.parseInt(click.pageY/100)-3;
+                x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
+                y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
                 dir=0;
                 fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
                     if(reponse.status===409){
@@ -101,8 +101,8 @@ document.getElementById("bonus").onclick=function(target){
             }
             document.getElementById("jeu").onclick=function(click){
                 no=2;
-                x=Number.parseInt(click.pageX/100)-3;
-                y=Number.parseInt(click.pageY/100)-3;
+                x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
+                y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
                 let hd=click.pageX%100>click.pageY%100;
                 let hg=(click.pageX%100+click.pageY%100)<100;
                 if(hd && hg){
@@ -133,8 +133,8 @@ document.getElementById("bonus").onclick=function(target){
         case "turn_mirror":
             document.getElementById("jeu").onclick=function(click){
                 no=3;
-                x=Number.parseInt(click.pageX/100)-3;
-                y=Number.parseInt(click.pageY/100)-3;
+                x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
+                y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
                 dir=0;
                 fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
                     if(reponse.status===409){
@@ -152,8 +152,8 @@ document.getElementById("bonus").onclick=function(target){
             }
             document.getElementById("jeu").onclick=function(click){
                 no=4;
-                x=Number.parseInt(click.pageX/100)-3;
-                y=Number.parseInt(click.pageY/100)-3;
+                x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
+                y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
                 let hd=click.pageX%100>click.pageY%100;
                 let hg=(click.pageX%100+click.pageY%100)<100;
                 if(hd && hg){
@@ -215,7 +215,7 @@ function wait(){
                 line_html+="</div>";
                 document.getElementById("jeu").innerHTML+=line_html;
             });
-            let players=text.split("!")[1].split("\\");
+            let players=text.split("!")[1].split(":")[0].split("\\");
             document.getElementById("scores").innerHTML=""
             players.forEach(player => {
                 let score_html='<div class="score" style="background-color: '+player.split("@")[2]+';">';
@@ -226,6 +226,8 @@ function wait(){
                 score_html+='</div><div class="piece"></div></div>';
                 document.getElementById("scores").innerHTML+=score_html;
             });
+            document.getElementById("cible_price").innerText=text.split(":")[1];
+            document.getElementById("player_price").innerText=text.split(":")[2];
             if(text.split("!").length>2){
                 document.getElementById("main").style="display: none";
                 document.getElementById("left").style="display: none";

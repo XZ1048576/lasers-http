@@ -70,6 +70,10 @@ class Jeu:
         self.tour=0
         self.twice=False
         self.events=[]
+        self.cible_price=3
+        self.nb_tirs_cible=0
+        self.player_price=10
+        self.nb_tirs_player=0
         for i,pos in enumerate(pos_joueurs):
             if len(self.joueurs)>i:
                 self.joueurs[i].init(self,pos,30)
@@ -177,7 +181,13 @@ class Jeu:
             else:
                 return self.laser_input(3,casex+1,casey,map_images)
         elif self.map[casey][casex]==4:
-            self.joueurs[self.tour].add_cash(3)
+            self.joueurs[self.tour].add_cash(self.cible_price)
+            self.nb_tirs_cible+=1
+            if self.nb_tirs_cible==10:
+                self.nb_tirs_cible=0
+                self.cible_price*=7
+                self.cible_price+=3
+                self.cible_price//=6
             map_images[casey][casex].add("laser"+"dbgh"[dir-1])
             return True
         elif self.map[casey][casex] in (5,6,7,8):
@@ -208,8 +218,13 @@ class Jeu:
                     return self.laser_input(3,casex+1,casey,map_images)
             elif self.map[casey][casex]-dir in (1,5):
                 map_images[casey][casex].add("killed_"+["270","0","90","180"][dir-1])
-                self.joueurs[self.tour].add_cash(10)
-                self.joueur_in_case(casex,casey).add_cash(-10)
+                self.joueurs[self.tour].add_cash(self.player_price)
+                self.joueur_in_case(casex,casey).add_cash(-self.player_price)
+                self.nb_tirs_player+=1
+                if self.nb_tirs_player==4:
+                    self.nb_tirs_player=0
+                    self.player_price*=4
+                    self.player_price//=3
                 if self.joueur_in_case(casex,casey).cash<0:
                     self.joueur_in_case(casex,casey).alive=False
                     self.map[casey][casex]=1
@@ -286,7 +301,7 @@ class Jeu:
             else:
                 color="#"+"".join(["{:0>2x}".format(int(x.color[2*y+1:2*y+3],16)//2+128) for y in range(3)])
                 players.append(x.pseudo+" (mort)@@"+color)
-        return "#".join(r)+"!"+"\\".join(players)
+        return "#".join(r)+"!"+"\\".join(players)+":"+str(self.cible_price)+":"+str(self.player_price)
     def wait(self,joueur,no):
         joueur_no=-1
         for i in range(len(self.joueurs)):

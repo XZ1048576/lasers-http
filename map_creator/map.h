@@ -199,7 +199,7 @@ Map Map_Create(char* map){
     nb+=0x400;
     result.width=nb&0x3ff;
     result.height=(nb&0xffc00)>>10;
-    result.data=malloc(((result.width+1)>1)*result.height);
+    result.data=malloc(((result.width+1)>>1)*result.height);
     for(int i=0,j=0,k=0;map[i]!='!';i++){
         if(map[i]=='#'){
             j=0;

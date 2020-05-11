@@ -79,7 +79,7 @@ int main(int argc,char* argv[]){
         fclose(map_file);
         map=Map_Create(map_txt);
     } else {
-        map=Map_Create("1111111#1111111#1111111#1114111#1111111#1111111#1111111!1");
+        map=Map_Create("511116#111111#114111#111211#111111#811117!1");
     }
     SDL_Event event;
     while(continuer){
@@ -160,7 +160,7 @@ int main(int argc,char* argv[]){
                             } else if(full_window.h-event.button.y<100 && event.button.x>=50 && event.button.x<150){ //boutons de rotation
                                 if(selectedx<map.width && selectedy<map.height && selectedx != -1){
                                     UINT8 sens=0;
-                                    if(event.button.x<100){ //rotation à gauche
+                                    if(event.button.x<100){ //rotation a gauche
                                         sens=2;
                                     }
                                 switch(Map_GetAt(map,selectedx,selectedy)){

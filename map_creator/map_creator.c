@@ -79,7 +79,7 @@ int main(int argc,char* argv[]){
         fclose(map_file);
         map=Map_Create(map_txt);
     } else {
-        map=Map_Create("1111111#1111111#1111111#1114111#1111111#1111111#1111111!1");
+        map=Map_Create("511116#111111#114111#111211#111111#811117!1");
     }
     SDL_Event event;
     while(continuer){
@@ -242,7 +242,7 @@ int main(int argc,char* argv[]){
                             gets(new_filename);
                             int i=0;
                             for(;new_filename[i];i++);
-                            strcpy(new_filename+i,".txt");
+                            strcpy(new_filename+i,".lama");
                             system("cls");
                             ShowWindow(console_handle,0);
                             if(new_filename[0]){

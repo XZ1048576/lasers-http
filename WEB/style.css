@@ -169,6 +169,7 @@ html body div#main-scroll div#main div#jeu div.line div.case div.move_obj{
 html body div#left{
     display: inline-block;
     position: absolute;
+    overflow-y: scroll;
 }
 html body div#left div#scores div.score{
     height: 100px;

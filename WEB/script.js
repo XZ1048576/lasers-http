@@ -4,9 +4,11 @@ const PLAYER="##player##";
 window.addEventListener("resize",function(){
     document.getElementById("main-scroll").style.maxWidth=(window.innerWidth-300)+"px";
     document.getElementById("main-scroll").style.maxHeight=window.innerHeight+"px";
+    document.getElementById("left").style.maxHeight=window.innerHeight+"px";
 },true);
 document.getElementById("main-scroll").style.maxWidth=(window.innerWidth-300)+"px";
 document.getElementById("main-scroll").style.maxHeight=window.innerHeight+"px";
+document.getElementById("left").style.maxHeight=window.innerHeight+"px";
 document.getElementById("control").onclick=function(target){
     let key=null;
     switch(target.target.id){

@@ -186,7 +186,10 @@ int main(int argc,char* argv[]){
                                 }
                             }
                         } else if(full_window.w-event.button.x<100){ //bande gise de droite
-                            //todo
+                            if(event.button.y<100){
+                                map.default_++;
+                                map.default_&=3;
+                            }
                         } else{
                             int x=(event.button.x+camerax)/zoom;
                             int y=(event.button.y+cameray)/zoom;
@@ -361,6 +364,9 @@ int main(int argc,char* argv[]){
                 SDL_RenderCopy(renderer,texture,&rotr,&dest);
             }
         }
+        // bande de droite
+        dest=(SDL_Rect){full_window.w-100,0,100,100};
+        SDL_RenderCopy(renderer,texture,images+map.default_,&dest);
         SDL_RenderPresent(renderer);
     }
     return 0;

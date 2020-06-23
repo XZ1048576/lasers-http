@@ -431,7 +431,7 @@ class Jeu:
             raise ValueError("Ce n'est pas ton tour")
         if not self.can_play:
             raise ValueError("Impossible de jouer pour le moment")
-        prix=[40,25,17,12,21,50][no]
+        prix=[40,25,17,12,21,50,5][no]
         if self.joueurs[self.tour].cash>=prix:
             self.joueurs[self.tour].cash-=prix
         else:
@@ -476,6 +476,11 @@ class Jeu:
                 self.joueurs[self.tour].cash+=prix
             else:
                 self.twice=True
+        elif no==6:
+            if self.map[pos[1]][pos[0]]==1:
+                self.map[pos[1]][pos[0]]=0
+            else:
+                self.joueurs[self.tour].cash+=prix
         for evt in self.events:
             evt.append(self.sort(self.mapping()))
 class Joueur:

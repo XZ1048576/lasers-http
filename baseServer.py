@@ -5,7 +5,7 @@ class Server(Thread):
         if a is None:
             a=socket.socket()
             a.bind(("",80))
-            a.listen(5)
+            a.listen(50)
         self.a=a
         Thread.__init__(self)
     def redirect(self,path,version):

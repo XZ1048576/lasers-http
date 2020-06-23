@@ -38,7 +38,7 @@ def index(params):
     elif b"partie" in params and b"pseudo" in params and b"color" in params:
         if params[b"partie"]==b"auto":
             if b"auto" in parties_pec:
-                parties_pec[b"auto"].append(Joueur(params[b"pseudo"].decode(),"#"+params[b"color"].decode()))
+                parties_pec[b"auto"].append(Joueur(params[b"pseudo"].decode("latin-1"),"#"+params[b"color"].decode()))
                 if len(parties_pec[b"auto"])==4:
                     name=b"auto"+generate_code(20).encode()
                     parties[name]=Jeu(*parties_pec[b"auto"])
@@ -50,13 +50,13 @@ def index(params):
                     return 200,f.read().replace(b"##player##",parties_pec[b"auto"][-1].id.encode())
                 return
             else:
-                parties_pec[b"auto"]=[Joueur(params[b"pseudo"].decode(),"#"+params[b"color"].decode())]
+                parties_pec[b"auto"]=[Joueur(params[b"pseudo"].decode("latin-1"),"#"+params[b"color"].decode())]
                 with open("./waiting_auto.html","rb") as f:
                     resp=f.read().replace(b"##player##",parties_pec[b"auto"][-1].id.encode())
                 return 200,resp
         elif params[b"partie"]==b"new":
             name=generate_code(24).encode()
-            parties_pec[name]=[Joueur(params[b"pseudo"].decode(),"#"+params[b"color"].decode())]
+            parties_pec[name]=[Joueur(params[b"pseudo"].decode("latin-1"),"#"+params[b"color"].decode())]
             if b"map" in params and params[b"map"] in parties_pec_info:
                 map=parties_pec_info.pop(params[b"map"])
                 parties_pec_info[name]=map,get_map_nb_players(map)
@@ -75,7 +75,7 @@ def index(params):
                 return
             if len(parties_pec[name])==parties_pec_info.get(name,(0,4))[1]:
                 return 409,b"<html><body>Cette partie est compl&egrave;te.</body></html>"
-            parties_pec[name].append(Joueur(params[b"pseudo"].decode(),"#"+params[b"color"].decode()))
+            parties_pec[name].append(Joueur(params[b"pseudo"].decode("latin-1"),"#"+params[b"color"].decode()))
             with open("./waiting.html","rb") as f:
                 ctn=f.read()
                 ctn=ctn.replace(b"##partie##",name)

@@ -70,13 +70,13 @@ class Jeu:
         self.tour=0
         self.twice=False
         self.events=[]
-        self.cible_price=3
+        self.cible_price=5
         self.nb_tirs_cible=0
-        self.player_price=10
+        self.player_price=16
         self.nb_tirs_player=0
         for i,pos in enumerate(pos_joueurs):
             if len(self.joueurs)>i:
-                self.joueurs[i].init(self,pos,30)
+                self.joueurs[i].init(self,pos,50)
             else:
                 self.map[pos[1]][pos[0]]=int(map.split("!")[1])
         for joueur in self.joueurs:
@@ -333,28 +333,28 @@ class Jeu:
             raise ValueError("Impossible de jouer pour le moment")
         self.can_play=False
         if coup==0:
-            if self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x-1]!=1:
+            if self.joueurs[self.tour].x==0 or self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x-1]!=1:
                 self.can_play=True
                 return
             self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x-1]=self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x]
             self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x]=1
             self.joueurs[self.tour].x-=1
         elif coup==1:
-            if self.map[self.joueurs[self.tour].y-1][self.joueurs[self.tour].x]!=1:
+            if self.joueurs[self.tour].y==0 or self.map[self.joueurs[self.tour].y-1][self.joueurs[self.tour].x]!=1:
                 self.can_play=True
                 return
             self.map[self.joueurs[self.tour].y-1][self.joueurs[self.tour].x]=self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x]
             self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x]=1
             self.joueurs[self.tour].y-=1
         elif coup==2:
-            if self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x+1]!=1:
+            if self.joueurs[self.tour].x==len(self.map[0]) or self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x+1]!=1:
                 self.can_play=True
                 return
             self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x+1]=self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x]
             self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x]=1
             self.joueurs[self.tour].x+=1
         elif coup==3:
-            if self.map[self.joueurs[self.tour].y+1][self.joueurs[self.tour].x]!=1:
+            if self.joueurs[self.tour].y==len(self.map) or self.map[self.joueurs[self.tour].y+1][self.joueurs[self.tour].x]!=1:
                 self.can_play=True
                 return
             self.map[self.joueurs[self.tour].y+1][self.joueurs[self.tour].x]=self.map[self.joueurs[self.tour].y][self.joueurs[self.tour].x]

@@ -127,7 +127,7 @@ document.getElementById("bonus").onclick=function(target){
                     document.getElementsByClassName("mirroir")[i].innerHTML='';
                 }
                 for(let i=0;i<document.getElementsByClassName("mirroirt").length;i++){
-                    document.getElementsByClassName("mirroir")[i].innerHTML='';
+                    document.getElementsByClassName("mirroirt")[i].innerHTML='';
                 }
                 document.getElementById("jeu").onclick=null;
             }
@@ -150,7 +150,7 @@ document.getElementById("bonus").onclick=function(target){
             break;
         case "move_cible":
             for(let i=0;i<document.getElementsByClassName("cible").length;i++){
-                document.getElementsByClassName("cible")[i].innerHTML='<img src="move_obj.png"/>';
+                document.getElementsByClassName("cible")[i].innerHTML='<div class="move_obj"></div>';
             }
             document.getElementById("jeu").onclick=function(click){
                 no=4;

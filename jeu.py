@@ -261,7 +261,7 @@ class Jeu:
         if not self.map[y][x] in (5,6,7,8):
             raise ValueError("aucun joueur ne se trouve ici")
         for joueur in self.joueurs:
-            if joueur.x==x and joueur.y==y:
+            if joueur.x==x and joueur.y==y and joueur.alive:
                 return joueur
     def sort(self,map_images):
         r=[]

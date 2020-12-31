@@ -24,7 +24,7 @@
             <script>
                 document.getElementById("alea_start").onclick=function(){
                     let url="/?partie=auto&pseudo=";
-                    url+=document.getElementById("pseudo").value;
+                    url+=encodeURIComponent(document.getElementById("pseudo").value);
                     url+="&color=";
                     url+=document.getElementById("color").value.slice(1,7);
                     document.location=url;
@@ -38,7 +38,7 @@
             <script>
                 document.getElementById("perso_create").onclick=function(){
                     let url="/?partie=new&pseudo=";
-                    url+=document.getElementById("pseudo").value;
+                    url+=encodeURIComponent(document.getElementById("pseudo").value);
                     url+="&color=";
                     url+=document.getElementById("color").value.slice(1,7);
                     if(document.getElementById("file").files[0]){
@@ -75,7 +75,7 @@
                     let url="/?partie=rej_";
                     url+=document.getElementById("rej_gamename").value;
                     url+="&pseudo=";
-                    url+=document.getElementById("pseudo").value;
+                    url+=encodeURIComponent(document.getElementById("pseudo").value);
                     url+="&color=";
                     url+=document.getElementById("color").value.slice(1,7);
                     document.location=url;

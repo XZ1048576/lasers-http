@@ -124,16 +124,6 @@ class Server(baseServer.Server):
                                 return
                     self.cnx.send(version+b" 200 OK\r\nType: changelist\r\n\r\n"+b"\\".join([(x.pseudo+"@"+x.color).encode() for x in parties_pec[parameters[b"partie"]]])+b"!"+cond)
                     return
-            elif path==b"/player.svg":
-                color=b"#"+parameters.get(b"color",b"000000")
-                if len(color)!=7:
-                    color=b"#000000"
-                for x in color[1:]:
-                    if (x<0x30 or x>0x39) and (x<0x61 or x>0x66):
-                        color="#000000"
-                        break
-                with open("./WEB/player.svg","rb")as f:
-                    self.cnx.send(version+b" 200 OK\r\nContent-Type: image/svg+xml\r\n\r\n"+f.read().replace(b"#2677d7",color))
             elif path==b"/play":
                 if b"partie" in parameters and b"player" in parameters and b"coup" in parameters and parameters[b"partie"] in parties:
                     try:

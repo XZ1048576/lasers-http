@@ -122,7 +122,7 @@ class Server(baseServer.Server):
                                 if parties_pec[parameters[b"partie"]][-1]==len(parties_pec[parameters[b"partie"]])-3:
                                     del parties_pec[parameters[b"partie"]]
                                 return
-                    self.cnx.send(version+b" 200 OK\r\nType: changelist\r\n\r\n"+b"\\".join([(x.pseudo+"@"+x.color).encode() for x in parties_pec[parameters[b"partie"]]])+b"!"+cond)
+                    self.cnx.send(version+b" 200 OK\r\nType: changelist\r\n\r\n"+b"%~&1%~&".join([(x.pseudo+"%~&2%~&"+x.color).encode("latin-1") for x in parties_pec[parameters[b"partie"]]])+b"%~&0%~&"+cond)
                     return
             elif path==b"/play":
                 if b"partie" in parameters and b"player" in parameters and b"coup" in parameters and parameters[b"partie"] in parties:

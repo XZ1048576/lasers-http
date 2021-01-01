@@ -23,13 +23,13 @@
                 fetch("/wait?partie=auto&player="+Player+"&checksum="+checksum).catch(wait).then(reponse => {
                     if(reponse.headers.get("Type")=="changelist"){
                         reponse.text().then(text => {
-                            checksum=text.split("!")[1]
+                            checksum=text.split("%~&0%~&")[1]
                             document.getElementById("joueurs").innerHTML="";
-                            text.split("!")[0].split("\\").forEach(joueur => {
+                            text.split("%~&0%~&")[0].split("%~&1%~&").forEach(joueur => {
                                 let ctn='<div style="background-color: ';
-                                ctn+=joueur.split("@")[1];
+                                ctn+=joueur.split("%~&2%~&")[1];
                                 ctn+='" class="joueur">';
-                                ctn+=joueur.split("@")[0];
+                                ctn+=joueur.split("%~&2%~&")[0];
                                 ctn+="</div>";
                                 document.getElementById("joueurs").innerHTML+=ctn;
                             });

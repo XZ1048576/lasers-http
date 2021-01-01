@@ -297,11 +297,11 @@ class Jeu:
         players=[]
         for x in self.joueurs:
             if x.alive:
-                players.append(x.pseudo+"@"+str(x.cash)+"@"+x.color)
+                players.append(x.pseudo+"%~&3%~&"+str(x.cash)+"%~&3%~&"+x.color)
             else:
                 color="#"+"".join(["{:0>2x}".format(int(x.color[2*y+1:2*y+3],16)//2+128) for y in range(3)])
-                players.append(x.pseudo+" (mort)@@"+color)
-        return "#".join(r)+"!"+"\\".join(players)+":"+str(self.cible_price)+":"+str(self.player_price)
+                players.append(x.pseudo+" (mort)%~&3%~&%~&3%~&"+color)
+        return "#".join(r)+"%~&0%~&"+"%~&1%~&".join(players)+"%~&2%~&"+str(self.cible_price)+"%~&2%~&"+str(self.player_price)
     def wait(self,joueur,no):
         joueur_no=-1
         for i in range(len(self.joueurs)):
@@ -310,7 +310,7 @@ class Jeu:
         if joueur_no==-1:
             raise ValueError("Ce joueur ne fait pas partie de cette partie")
         while len(self.events[joueur_no])<=no:
-            wait(0.02)
+            wait(0.2)
         return self.events[joueur_no][no]
     def mapping(self):
         imgs=["bois",None,"mirroir","mirroirt","cible","joueur_180","joueur_270","joueur_0","joueur_90"]
@@ -419,7 +419,7 @@ class Jeu:
         for x in self.joueurs:
             nb_alive+=x.alive
         if nb_alive==1:
-            new_event+=("!"+self.joueurs[self.tour].pseudo+"@"+self.joueurs[self.tour].color)
+            new_event+=("%~&0%~&"+self.joueurs[self.tour].pseudo+"%~&3%~&"+self.joueurs[self.tour].color)
         for evt in self.events:
             evt.append(new_event)
         self.can_play=True

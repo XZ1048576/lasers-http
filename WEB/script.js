@@ -210,7 +210,7 @@ document.getElementById("bonus").onclick=function(target){
 function wait(){
     fetch("/wait?no="+waits+"&partie="+partie+"&player="+PLAYER).catch(wait).then(function(reponse){
         reponse.text().then(function(text){
-            let lines=text.split("%~&0%~&")[0].split("#");
+            let lines=text.split("%~&0%~&!")[0].split("#");
             let height=lines.length;
             let width=lines[0].split("@").length;
             document.getElementById("jeu").style="height:"+(100*height)+"px;width:"+(100*width)+"px;";
@@ -237,25 +237,29 @@ function wait(){
                 line_html+="</div>";
                 document.getElementById("jeu").innerHTML+=line_html;
             });
-            let players=text.split("%~&0%~&")[1].split("%~&2%~&")[0].split("%~&1%~&");
+            let players=text.split("%~&0%~&!")[1].split("%~&2%~&!")[0].split("%~&1%~&!");
             document.getElementById("scores").innerHTML=""
             players.forEach(player => {
-                let score_html='<div class="score" style="background-color: '+player.split("%~&3%~&")[2]+';">';
+                let score_html='<div class="score" style="background-color: '+player.split("%~&3%~&!")[2]+';">';
                 score_html+='<div class="pseudo">';
-                score_html+=player.split("%~&3%~&")[0];
+                score_html+=player.split("%~&3%~&!")[0];
                 score_html+='</div><div class="cash">';
-                score_html+=player.split("%~&3%~&")[1];
-                score_html+='</div><div class="piece"></div></div>';
+                score_html+=player.split("%~&3%~&!")[1];
+                score_html+='</div><div class="piece"></div>';
+                if(player.split("%~&3%~&!")[3]=='1'){
+                    score_html+='<div class="actual_player"></div>';
+                }
+                score_html+='</div>';
                 document.getElementById("scores").innerHTML+=score_html;
             });
-            document.getElementById("cible_price").innerText=text.split("%~&2%~&")[1];
-            document.getElementById("player_price").innerText=text.split("%~&2%~&")[2];
-            if(text.split("%~&0%~&").length>2){
+            document.getElementById("cible_price").innerText=text.split("%~&2%~&!")[1];
+            document.getElementById("player_price").innerText=text.split("%~&2%~&!")[2];
+            if(text.split("%~&0%~&!").length>2){
                 document.getElementById("main-scroll").style="display: none";
                 document.getElementById("left").style="display: none";
                 document.getElementById("win").style="display: block;";
-                document.body.parentElement.style="background-color:"+text.split("%~&0%~&")[2].split("%~&3%~&")[1]+";";
-                document.getElementById("winner_pseudo").innerText=text.split("%~&0%~&")[2].split("%~&3%~&")[0];
+                document.body.parentElement.style="background-color:"+text.split("%~&0%~&!")[2].split("%~&3%~&!")[1]+";";
+                document.getElementById("winner_pseudo").innerText=text.split("%~&0%~&!")[2].split("%~&3%~&!")[0];
             } else {
                 waits+=1;
                 wait();

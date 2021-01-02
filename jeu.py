@@ -297,11 +297,11 @@ class Jeu:
         players=[]
         for x in self.joueurs:
             if x.alive:
-                players.append(x.pseudo+"%~&3%~&"+str(x.cash)+"%~&3%~&"+x.color)
+                players.append(x.pseudo+"%~&3%~&!"+str(x.cash)+"%~&3%~&!"+x.color+"%~&3%~&!"+str(int(x==self.joueurs[self.tour])))
             else:
                 color="#"+"".join(["{:0>2x}".format(int(x.color[2*y+1:2*y+3],16)//2+128) for y in range(3)])
-                players.append(x.pseudo+" (mort)%~&3%~&%~&3%~&"+color)
-        return "#".join(r)+"%~&0%~&"+"%~&1%~&".join(players)+"%~&2%~&"+str(self.cible_price)+"%~&2%~&"+str(self.player_price)
+                players.append(x.pseudo+" (mort)%~&3%~&!%~&3%~&!"+color+"%~&3%~&!0")
+        return "#".join(r)+"%~&0%~&!"+"%~&1%~&!".join(players)+"%~&2%~&!"+str(self.cible_price)+"%~&2%~&!"+str(self.player_price)
     def wait(self,joueur,no):
         joueur_no=-1
         for i in range(len(self.joueurs)):
@@ -419,7 +419,7 @@ class Jeu:
         for x in self.joueurs:
             nb_alive+=x.alive
         if nb_alive==1:
-            new_event+=("%~&0%~&"+self.joueurs[self.tour].pseudo+"%~&3%~&"+self.joueurs[self.tour].color)
+            new_event+=("%~&0%~&!"+self.joueurs[self.tour].pseudo+"%~&3%~&!"+self.joueurs[self.tour].color)
         for evt in self.events:
             evt.append(new_event)
         self.can_play=True

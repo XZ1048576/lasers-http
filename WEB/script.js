@@ -103,10 +103,10 @@ document.getElementById("bonus").onclick=function(target){
             }
             document.getElementById("jeu").onclick=function(click){
                 no=2;
-                x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
-                y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
-                let hd=click.pageX%100>click.pageY%100;
-                let hg=(click.pageX%100+click.pageY%100)<100;
+                x=click.pageX+document.getElementById("main-scroll").scrollLeft;
+                y=click.pageY+document.getElementById("main-scroll").scrollTop;
+                let hd=x%100>y%100;
+                let hg=(x%100+y%100)<100;
                 if(hd && hg){
                     dir=1;
                 } else if(hd && !hg){
@@ -116,6 +116,8 @@ document.getElementById("bonus").onclick=function(target){
                 } else if(!hd && hg){
                     dir=0;
                 }
+                x=Number.parseInt(x/100)-3;
+                y=Number.parseInt(y/100)-3;
                 fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
                     if(reponse.status===409){
                         reponse.text().then(error =>{
@@ -154,10 +156,10 @@ document.getElementById("bonus").onclick=function(target){
             }
             document.getElementById("jeu").onclick=function(click){
                 no=4;
-                x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
-                y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
-                let hd=click.pageX%100>click.pageY%100;
-                let hg=(click.pageX%100+click.pageY%100)<100;
+                x=click.pageX+document.getElementById("main-scroll").scrollLeft;
+                y=click.pageY+document.getElementById("main-scroll").scrollTop;
+                let hd=x%100>y%100;
+                let hg=(x%100+y%100)<100;
                 if(hd && hg){
                     dir=1;
                 } else if(hd && !hg){
@@ -167,6 +169,8 @@ document.getElementById("bonus").onclick=function(target){
                 } else if(!hd && hg){
                     dir=0;
                 }
+                x=Number.parseInt(x/100)-3;
+                y=Number.parseInt(y/100)-3;
                 fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
                     if(reponse.status===409){
                         reponse.text().then(error =>{

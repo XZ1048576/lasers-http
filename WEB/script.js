@@ -43,26 +43,42 @@ document.getElementById("control").onclick=function(target){
         });
     }
 }
+function CloseBonus(){
+    document.getElementById("jeu").onclick=null;
+    document.getElementById("bonus-infos").style="";
+    Array.from(document.getElementById("bonus-infos").children).forEach(function(child){
+        if(child.localName=="div"){
+            child.style="";
+        }
+    });
+    Array.from(document.getElementsByClassName("mirroir")).forEach(function(mirror){
+        mirror.innerHTML='';
+    });
+    Array.from(document.getElementsByClassName("mirroirt")).forEach(function(mirror){
+        mirror.innerHTML='';
+    });
+    document.getElementsByClassName("cible")[0].innerHTML='';
+}
 document.getElementById("bonus").onclick=function(target){
     let no=null;
     let y=null;
     let x=null;
     let dir=null;
-    console.log("bonus");
     switch(target.target.id){
         case "add_mirror":
-            document.getElementById("jeu").onmousedown=function(click){
+            document.getElementById("bonus-infos").style="display: block";
+            document.getElementById("add_mirror_info").style="display: block";
+            document.getElementById("jeu").onclick=function(click){
                 no=0;
-                if(click.button==0){
-                    x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
-                    y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
+                x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
+                y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
+                if(document.getElementById("mirror_dir_/").checked){
                     dir=0;
-                } else if(click.button==2){
-                    x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
-                    y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
+                } else if(document.getElementById("mirror_dir_\\").checked){
                     dir=1;
                 } else {
-                    no=null;
+                    alert("Choisissez d'abord le sens du mirroir");
+                    return;
                 }
                 console.log(x,y,dir,no);
                 if(no!==null){
@@ -74,11 +90,12 @@ document.getElementById("bonus").onclick=function(target){
                         }
                     });
                 }
-                document.getElementById("jeu").onmousedown=null;
-    
+                CloseBonus();
             }
             break;
         case "del_mirror":
+            document.getElementById("bonus-infos").style="display: block";
+            document.getElementById("del_mirror_info").style="display: block";
             document.getElementById("jeu").onclick=function(click){
                 no=1;
                 x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
@@ -91,16 +108,18 @@ document.getElementById("bonus").onclick=function(target){
                         });
                     }
                 });
-                document.getElementById("jeu").onclick=null;
+                CloseBonus();
             }
             break;
         case "move_mirror":
-            for(let i=0;i<document.getElementsByClassName("mirroir").length;i++){
-                document.getElementsByClassName("mirroir")[i].innerHTML='<div class="move_obj"></div>';
-            }
-            for(let i=0;i<document.getElementsByClassName("mirroirt").length;i++){
-                document.getElementsByClassName("mirroirt")[i].innerHTML='<div class="move_obj"></div>';
-            }
+            document.getElementById("bonus-infos").style="display: block";
+            document.getElementById("move_mirror_info").style="display: block";
+            Array.from(document.getElementsByClassName("mirroir")).forEach(function(mirror){
+                mirror.innerHTML='<div class="move_obj"></div>';
+            });
+            Array.from(document.getElementsByClassName("mirroirt")).forEach(function(mirror){
+                mirror.innerHTML='<div class="move_obj"></div>';
+            });
             document.getElementById("jeu").onclick=function(click){
                 no=2;
                 x=click.pageX+document.getElementById("main-scroll").scrollLeft;
@@ -125,16 +144,12 @@ document.getElementById("bonus").onclick=function(target){
                         });
                     }
                 });
-                for(let i=0;i<document.getElementsByClassName("mirroir").length;i++){
-                    document.getElementsByClassName("mirroir")[i].innerHTML='';
-                }
-                for(let i=0;i<document.getElementsByClassName("mirroirt").length;i++){
-                    document.getElementsByClassName("mirroirt")[i].innerHTML='';
-                }
-                document.getElementById("jeu").onclick=null;
+                CloseBonus();
             }
             break;
         case "turn_mirror":
+            document.getElementById("bonus-infos").style="display: block";
+            document.getElementById("turn_mirror_info").style="display: block";
             document.getElementById("jeu").onclick=function(click){
                 no=3;
                 x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
@@ -147,13 +162,13 @@ document.getElementById("bonus").onclick=function(target){
                         });
                     }
                 });
-                document.getElementById("jeu").onclick=null;
+                CloseBonus();
             }
             break;
         case "move_cible":
-            for(let i=0;i<document.getElementsByClassName("cible").length;i++){
-                document.getElementsByClassName("cible")[i].innerHTML='<div class="move_obj"></div>';
-            }
+            document.getElementById("bonus-infos").style="display: block";
+            document.getElementById("move_cible_info").style="display: block";
+            document.getElementsByClassName("cible")[0].innerHTML='<div class="move_obj"></div>';
             document.getElementById("jeu").onclick=function(click){
                 no=4;
                 x=click.pageX+document.getElementById("main-scroll").scrollLeft;
@@ -178,10 +193,7 @@ document.getElementById("bonus").onclick=function(target){
                         });
                     }
                 });
-                for(let i=0;i<document.getElementsByClassName("cible").length;i++){
-                    document.getElementsByClassName("cible")[i].innerHTML='';
-                }
-                document.getElementById("jeu").onclick=null;
+                CloseBonus();
             }
             break;
         case "2play":
@@ -194,6 +206,8 @@ document.getElementById("bonus").onclick=function(target){
             });
             break;
         case "add_wood":
+            document.getElementById("bonus-infos").style="display: block";
+            document.getElementById("add_wood_info").style="display: block";
             document.getElementById("jeu").onclick=function(click){
                 no=6;
                 x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
@@ -206,11 +220,12 @@ document.getElementById("bonus").onclick=function(target){
                         });
                     }
                 });
-                document.getElementById("jeu").onclick=null;
+                CloseBonus();
             }
             break;
     }
 }
+document.getElementById("cancel_bonus").onclick=CloseBonus;
 function wait(){
     fetch("/wait?no="+waits+"&partie="+partie+"&player="+PLAYER).catch(wait).then(function(reponse){
         reponse.text().then(function(text){
@@ -250,8 +265,12 @@ function wait(){
                 score_html+='</div><div class="cash">';
                 score_html+=player.split("%~&3%~&!")[1];
                 score_html+='</div><div class="piece"></div>';
-                if(player.split("%~&3%~&!")[3]=='1'){
-                    score_html+='<div class="actual_player"></div>';
+                switch(player.split("%~&3%~&!")[3]){
+                    case '1':
+                        score_html+='<div class="actual_player"></div>';
+                        break;
+                    case '2':
+                        score_html+='<div class="actual_player_2x"></div>';
                 }
                 score_html+='</div>';
                 document.getElementById("scores").innerHTML+=score_html;

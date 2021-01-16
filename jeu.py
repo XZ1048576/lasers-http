@@ -297,7 +297,7 @@ class Jeu:
         players=[]
         for x in self.joueurs:
             if x.alive:
-                players.append(x.pseudo+"%~&3%~&!"+str(x.cash)+"%~&3%~&!"+x.color+"%~&3%~&!"+str(int(x==self.joueurs[self.tour])))
+                players.append(x.pseudo+"%~&3%~&!"+str(x.cash)+"%~&3%~&!"+x.color+"%~&3%~&!"+(("2" if self.twice else "1") if x==self.joueurs[self.tour] else "0"))
             else:
                 color="#"+"".join(["{:0>2x}".format(int(x.color[2*y+1:2*y+3],16)//2+128) for y in range(3)])
                 players.append(x.pseudo+" (mort)%~&3%~&!%~&3%~&!"+color+"%~&3%~&!0")

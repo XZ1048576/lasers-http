@@ -12,16 +12,16 @@ document.getElementById("left").style.maxHeight=window.innerHeight+"px";
 document.getElementById("control").onclick=function(target){
     let key=null;
     switch(target.target.id){
-        case "left" :
+        case "move_left" :
             key=0;
             break;
-        case "up" :
+        case "move_up" :
             key=1;
             break;
-        case "right":
+        case "move_right":
             key=2;
             break;
-        case "down":
+        case "move_down":
             key=3;
             break;
         case "turn right":
@@ -64,7 +64,11 @@ document.getElementById("bonus").onclick=function(target){
     let y=null;
     let x=null;
     let dir=null;
-    switch(target.target.id){
+    let bonus_type=target.target;
+    while(bonus_type.id===""){
+        bonus_type=bonus_type.parentElement;
+    }
+    switch(bonus_type.id){
         case "add_mirror":
             document.getElementById("bonus-infos").style="display: block";
             document.getElementById("add_mirror_info").style="display: block";

@@ -7,7 +7,7 @@
 	<body>
 		<div id="win" style="display: none"><span id="winner_pseudo"></span> a gagn&eacute; !!!</div>
 		<div id="main-scroll">
-			<div id="main">
+			<div id="main" class="img_bois">
 				<div id="jeu"></div>
 			</div>
 			<div id="bonus-infos">
@@ -50,37 +50,89 @@
 			<div id="control">
 				<table>
 					<tr>
-						<td><img src="turn.png" id="turn left"/></td>
-						<td><img src="move.png" id="up"/></td>
-						<td><img src="turn.png" style="transform: scaleX(-1)" id="turn right"/></td>
+						<td><div id="turn left" class="img_turn"></div></td>
+						<td><div id="move_up" class="img_move"></td>
+						<td><div style="transform: scaleX(-1)" id="turn right" class="img_turn"></div></td>
 					</tr>
 					<tr>
-						<td><img src="move.png" style="transform: rotate(270deg)" id="left"/></td>
-						<td><img src="move.png" style="transform: rotate(180deg)" id="down"/></td>
-						<td><img src="move.png" style="transform: rotate(90deg)" id="right"/></td>
+						<td><div style="transform: rotate(270deg)" id="move_left" class="img_move"></div></td>
+						<td><div style="transform: rotate(180deg)" id="move_down" class="img_move"></div></td>
+						<td><div style="transform: rotate(90deg)" id="move_right" class="img_move"></div></td>
 					</tr>
 				</table>
 				<img src="fire.png" id="fire">
 			</div>
 			<div id="bonus">
-				<table>
-					<tr>
-						<td><img src="add_mirror.png" id="add_mirror"/></td>
-						<td><img src="del_mirror.png" id="del_mirror"/></td>
-						<td><img src="move_mirror.png" id="move_mirror"/></td>
-					</tr>
-					<tr>
-						<td><img src="turn_mirror.png" id="turn_mirror"/></td>
-						<td><img src="move_cible.png" id="move_cible"/></td>
-						<td><img src="2play.png" id="2play"/></td>
-					
-					</tr>
-					<tr>
-						<td></td>
-						<td><img src="add_wood.png" id="add_wood"></td>
-						<td></td>
-					</tr>
-				</table>
+				<div class="bonus-line">
+					<div id="add_mirror" class="bonus">
+						<div class="flex">
+							+<div class="img img_mirroir"></div>
+						</div>
+						<div class="flex">
+							40 <div class="piece"></div>
+						</div>
+					</div>
+					<div id="del_mirror" class="bonus">
+						<div class="flex">
+							<div class="img img_mirroir">
+								<p style="font-size: 45px; color: #f00; margin: 0px; font-family: Arial;">X</p>
+							</div>
+						</div>
+						<div class="flex">
+							25 <div class="piece"></div>
+						</div>
+					</div>
+					<div id="move_mirror" class="bonus">
+						<div class="flex">
+							<div class="img img_mirroir">
+								<div class="img move_obj"></div>
+							</div>
+						</div>
+						<div class="flex">
+							17 <div class="piece"></div>
+						</div>
+					</div>
+				</div>
+				<div class="bonus-line">
+					<div id="turn_mirror" class="bonus">
+						<div class="flex">
+							<div class="img img_mirroir">
+								<div class="img img_turn"></div>
+							</div>
+						</div>
+						<div class="flex">
+							12 <div class="piece"></div>
+						</div>
+					</div>
+					<div id="move_cible" class="bonus">
+						<div class="flex">
+							<div class="img img_cible">
+								<div class="img move_obj"></div>
+							</div>
+						</div>
+						<div class="flex">
+							21 <div class="piece"></div>
+						</div>
+					</div>
+					<div id="2play" class="bonus">
+						<div class="flex curlz">
+							2x
+						</div>
+						<div class="flex">
+							50 <div class="piece"></div>
+						</div>
+					</div>
+				</div>
+				<div class="bonus-line">
+					<div id="add_wood" class="bonus">
+						<div class="flex">
+							+<div class="img img_bois"></div>
+						</div>
+						<div class="flex">
+							5 <div class="piece"></div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<script src="/script.js?partie=##partie##&player=##player##"></script>

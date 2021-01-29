@@ -130,10 +130,10 @@ class Jeu:
             else:
                 map_images[casey][casex].add("laserh")
                 map_images[casey][casex].add("laserb")
-            map_images[casey][casex].add("lasergc")
-            map_images[casey][casex].add("laserdc")
-            map_images[casey][casex].add("laserhc")
-            map_images[casey][casex].add("laserbc")
+            map_images[casey][casex].add("laserc lasergc")
+            map_images[casey][casex].add("laserc laserdc")
+            map_images[casey][casex].add("laserc laserhc")
+            map_images[casey][casex].add("laserc laserbc")
             if dir==1:
                 return self.laser_input(dir,casex-1,casey,map_images)
             elif dir==2:
@@ -146,13 +146,13 @@ class Jeu:
             if dir<3:
                 map_images[casey][casex].add("laserd")
                 map_images[casey][casex].add("laserb")
-                map_images[casey][casex].add("laserdc")
-                map_images[casey][casex].add("laserbc")
+                map_images[casey][casex].add("laserc laserdc")
+                map_images[casey][casex].add("laserc laserbc")
             else:
                 map_images[casey][casex].add("laserg")
                 map_images[casey][casex].add("laserh")
-                map_images[casey][casex].add("lasergc")
-                map_images[casey][casex].add("laserhc")
+                map_images[casey][casex].add("laserc lasergc")
+                map_images[casey][casex].add("laserc laserhc")
             if dir==1:
                 return self.laser_input(4,casex,casey+1,map_images)
             elif dir==2:
@@ -165,13 +165,13 @@ class Jeu:
             if dir in (1,4):
                 map_images[casey][casex].add("laserd")
                 map_images[casey][casex].add("laserh")
-                map_images[casey][casex].add("laserdc")
-                map_images[casey][casex].add("laserhc")
+                map_images[casey][casex].add("laserc laserdc")
+                map_images[casey][casex].add("laserc laserhc")
             else:
                 map_images[casey][casex].add("laserg")
                 map_images[casey][casex].add("laserb")
-                map_images[casey][casex].add("lasergc")
-                map_images[casey][casex].add("laserbc")
+                map_images[casey][casex].add("laserc lasergc")
+                map_images[casey][casex].add("laserc laserbc")
             if dir==1:
                 return self.laser_input(2,casex,casey-1,map_images)
             elif dir==2:
@@ -194,27 +194,27 @@ class Jeu:
             if self.map[casey][casex]-dir==4:
                 if dir==1:
                     map_images[casey][casex].add("laserd")
-                    map_images[casey][casex].add("laserdc")
+                    map_images[casey][casex].add("laserc laserdc")
                     map_images[casey][casex].add("laserb")
-                    map_images[casey][casex].add("laserbc")
+                    map_images[casey][casex].add("laserc laserbc")
                     return self.laser_input(4,casex,casey+1,map_images)
                 elif dir==2:
                     map_images[casey][casex].add("laserg")
-                    map_images[casey][casex].add("lasergc")
+                    map_images[casey][casex].add("laserc lasergc")
                     map_images[casey][casex].add("laserb")
-                    map_images[casey][casex].add("laserbc")
+                    map_images[casey][casex].add("laserc laserbc")
                     return self.laser_input(1,casex-1,casey,map_images)
                 elif dir==3:
                     map_images[casey][casex].add("laserg")
-                    map_images[casey][casex].add("lasergc")
+                    map_images[casey][casex].add("laserc lasergc")
                     map_images[casey][casex].add("laserh")
-                    map_images[casey][casex].add("laserhc")
+                    map_images[casey][casex].add("laserc laserhc")
                     return self.laser_input(2,casex,casey-1,map_images)
                 elif dir==4:
                     map_images[casey][casex].add("laserd")
-                    map_images[casey][casex].add("laserdc")
+                    map_images[casey][casex].add("laserc laserdc")
                     map_images[casey][casex].add("laserh")
-                    map_images[casey][casex].add("laserhc")
+                    map_images[casey][casex].add("laserc laserhc")
                     return self.laser_input(3,casex+1,casey,map_images)
             elif self.map[casey][casex]-dir in (1,5):
                 map_images[casey][casex].add("killed_"+["270","0","90","180"][dir-1])
@@ -235,27 +235,27 @@ class Jeu:
             elif self.map[casey][casex]-dir in (3,7):
                 if dir==1:
                     map_images[casey][casex].add("laserd")
-                    map_images[casey][casex].add("laserdc")
+                    map_images[casey][casex].add("laserc laserdc")
                     map_images[casey][casex].add("laserh")
-                    map_images[casey][casex].add("laserhc")
+                    map_images[casey][casex].add("laserc laserhc")
                     return self.laser_input(2,casex,casey-1,map_images)
                 elif dir==2:
                     map_images[casey][casex].add("laserd")
-                    map_images[casey][casex].add("laserdc")
+                    map_images[casey][casex].add("laserc laserdc")
                     map_images[casey][casex].add("laserb")
-                    map_images[casey][casex].add("laserbc")
+                    map_images[casey][casex].add("laserc laserbc")
                     return self.laser_input(3,casex+1,casey,map_images)
                 elif dir==3:
                     map_images[casey][casex].add("laserg")
-                    map_images[casey][casex].add("lasergc")
+                    map_images[casey][casex].add("laserc lasergc")
                     map_images[casey][casex].add("laserb")
-                    map_images[casey][casex].add("laserbc")
+                    map_images[casey][casex].add("laserc laserbc")
                     return self.laser_input(4,casex,casey+1,map_images)
                 elif dir==4:
                     map_images[casey][casex].add("laserg")
-                    map_images[casey][casex].add("lasergc")
+                    map_images[casey][casex].add("laserc lasergc")
                     map_images[casey][casex].add("laserh")
-                    map_images[casey][casex].add("laserhc")
+                    map_images[casey][casex].add("laserc laserhc")
                     return self.laser_input(1,casex-1,casey,map_images)
     def joueur_in_case(self,x,y):
         if not self.map[y][x] in (5,6,7,8):
@@ -313,7 +313,7 @@ class Jeu:
             wait(0.2)
         return self.events[joueur_no][no]
     def mapping(self):
-        imgs=["bois",None,"mirroir","mirroirt","cible","joueur_180","joueur_270","joueur_0","joueur_90"]
+        imgs=["img_bois bois",None,"img_mirroir mirroir","img_mirroir mirroirt","cible img_cible","joueur_180","joueur_270","joueur_0","joueur_90"]
         result=[]
         for casey in range(len(self.map)):
             result.append([])

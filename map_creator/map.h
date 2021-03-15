@@ -1,20 +1,20 @@
 typedef struct{
-    UINT8 width,height, *data,default_;
+    uint8_t width,height, *data,default_;
 } Map;
-UINT8 Map_GetAt(Map map,int x,int y){
+uint8_t Map_GetAt(Map map,int x,int y){
     if(x>map.width || y>map.height){
         return 9;
     }
-    UINT8 result=*(map.data+((map.width+1)>>1)*y+(x>>1));
-    UINT8 mask=0xf0>>((x&1)<<2);
+    uint8_t result=*(map.data+((map.width+1)>>1)*y+(x>>1));
+    uint8_t mask=0xf0>>((x&1)<<2);
     return (result&mask)>>(((x^1)&1)<<2);
 }
-void Map_SetAt(Map map,int x,int y,UINT8 value){
+void Map_SetAt(Map map,int x,int y,uint8_t value){
     if(x>=map.width || y>=map.height || (value>8)){
         return;
     }
-    UINT8* value_to_change=(map.data+((map.width+1)>>1)*y+(x>>1));
-    UINT8 mask=0xf<<((x&1)<<2);
+    uint8_t* value_to_change=(map.data+((map.width+1)>>1)*y+(x>>1));
+    uint8_t mask=0xf<<((x&1)<<2);
     value=value<<(((x^1)&1)<<2);
     *value_to_change=((*value_to_change&mask)|value);
     return;
@@ -28,15 +28,15 @@ void Map_insert_col(Map *map,int x){
     }
     map->width++;
     if(map->width&1){
-        UINT8* new_data=malloc(((map->width+1)>>1)*map->height);
-        UINT8* old_data=map->data;
+        uint8_t* new_data=malloc(((map->width+1)>>1)*map->height);
+        uint8_t* old_data=map->data;
         map->data=new_data;
         for(int i=0;i<map->height;i++){
             for(int j=0;j<map->width;j++){
                 if(j>x){
                     map->data=old_data;
                     map->width--;
-                    UINT8 value=Map_GetAt(*map,j-1,i);
+                    uint8_t value=Map_GetAt(*map,j-1,i);
                     map->data=new_data;
                     map->width++;
                     Map_SetAt(*map,j,i,value);
@@ -45,7 +45,7 @@ void Map_insert_col(Map *map,int x){
                 } else {
                     map->data=old_data;
                     map->width--;
-                    UINT8 value=Map_GetAt(*map,j,i);
+                    uint8_t value=Map_GetAt(*map,j,i);
                     map->data=new_data;
                     map->width++;
                     Map_SetAt(*map,j,i,value);
@@ -68,22 +68,22 @@ void Map_delete_col(Map *map,int x){
     }
     map->width--;
     if(!(map->width&1)){
-        UINT8* new_data=malloc(((map->width+1)>>1)*map->height);
-        UINT8* old_data=map->data;
+        uint8_t* new_data=malloc(((map->width+1)>>1)*map->height);
+        uint8_t* old_data=map->data;
         map->data=new_data;
         for(int i=0;i<map->height;i++){
             for(int j=0;j<map->width;j++){
                 if(j>=x){
                     map->data=old_data;
                     map->width++;
-                    UINT8 value=Map_GetAt(*map,j+1,i);
+                    uint8_t value=Map_GetAt(*map,j+1,i);
                     map->data=new_data;
                     map->width--;
                     Map_SetAt(*map,j,i,value);
                 } else {
                     map->data=old_data;
                     map->width++;
-                    UINT8 value=Map_GetAt(*map,j,i);
+                    uint8_t value=Map_GetAt(*map,j,i);
                     map->data=new_data;
                     map->width--;
                     Map_SetAt(*map,j,i,value);
@@ -107,8 +107,8 @@ void Map_insert_line(Map *map,int y){
     }
     map->height++;
     int bwidth=(map->width+1)>>1;
-    UINT8*new_data=malloc(bwidth*map->height);
-    UINT8*old_data=map->data;
+    uint8_t*new_data=malloc(bwidth*map->height);
+    uint8_t*old_data=map->data;
     for(int i=0;i<y*bwidth;i++){
         new_data[i]=old_data[i];
     }
@@ -127,8 +127,8 @@ void Map_delete_line(Map *map,int y){
     }
     map->height--;
     int bwidth=(map->width+1)>>1;
-    UINT8*new_data=malloc(bwidth*map->height);
-    UINT8*old_data=map->data;
+    uint8_t*new_data=malloc(bwidth*map->height);
+    uint8_t*old_data=map->data;
     for(int i=0;i<y*bwidth;i++){
         new_data[i]=old_data[i];
     }
@@ -140,7 +140,7 @@ void Map_delete_line(Map *map,int y){
 }
 Map Map_Create(char* map){
     Map result={0,0,NULL,0};
-    UINT32 nb=0;
+    uint32_t nb=0;
     for(int i=0;map[i];i++){
         if(map[i]=='!'){
             nb++;

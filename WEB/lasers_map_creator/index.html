@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lasers map creator</title>
+    </head>
+    <body>
+        <header id="menu">
+            <div id="file" class="menu">
+                <button class="menu_title">Fichier</button>
+                <div id="file_menu" class="menu_deroulant">
+                    <button id="new">Nouveau</button><br/>
+                    <button><a id="save" download="ma map.lama" href="#">Enregistrer</a><span class="raccourci">Ctrl+S</span></button><br/>
+                    <button id="open">Ouvrir<span class="raccourci">Ctrl+O</span></button><br/>
+                    <input id="open_input" style="display: none" type="file" accept=".lama"/>
+                    <button><a id="play" target="blank" href="#">Jouer</a><span class="raccourci">Ctrl+J</span></button><br/>
+                    <button id="export">Exporter en texte<span class="raccourci">Ctrl+E</span></button><br/>
+                    <button id="url_export">Exporter en url<span class="raccourci">Ctrl+U</span></button><br/>
+                    <button id="import">Importer du texte<span class="raccourci">Ctrl+I</span></button>
+                </div>
+            </div><div id="edit" class="menu">
+                <button class="menu_title">Editer</button>
+                <div id="edit_menu" class="menu_deroulant">
+                    <button onclick="undo()">D&eacute;faire<span class="raccourci">Ctrl+Z</span></button><br/>
+                    <button onclick="redo()">Refaire<span class="raccourci">Ctrl+Y</span></button><br/>
+                </div>
+            </div><div id="mode" class="menu">
+                <button class="menu_title">Mode</button>
+                <div id="mode_menu" class="menu_deroulant">
+                    <button><input type="radio" id="free" name="mode" value=0><label for="free">Libre</label></button><br/>
+                    <button><input type="radio" id="empty" name="mode" value=2><label for="empty">Vider des cases</label></button><br/>
+                    <button><input type="radio" id="wood" name="mode" value=1><label for="wood">Placer du bois</label></button><br/>
+                    <button><input type="radio" id="mirroir" name="mode" value=3><label for="mirroir">Placer des mirroirs /</label></button><br/>
+                    <button><input type="radio" id="mirroirt" name="mode" value=4><label for="mirroirt">Placer des mirroirs \</label></button><br/>
+                    <button><input type="radio" id="cible" name="mode" value="5"><label for="cible">D&eacute;placer la cible</label></button><br/>
+                    <button><input type="radio" id="joueurg" name="mode" value="6"><label for="joueurg">Placer un joueur (laser &agrave; gauche)</label></button><br/>
+                    <button><input type="radio" id="joueurd" name="mode" value="8"><label for="joueurd">Placer un joueur (laser &agrave; droite)</label></button><br/>
+                    <button><input type="radio" id="joueurh" name="mode" value="7"><label for="joueurh">Placer un joueur (laser en haut)</label></button><br/>
+                    <button><input type="radio" id="joueurb" name="mode" value="9"><label for="joueurb">Placer un joueur (laser en bas)</label></button><br/>
+                    <button><input type="radio" id="roth" name="mode" value=10><label for="roth">Pivoter dans le sens horraire</label></button><br/>
+                    <button><input type="radio" id="rott" name="mode" value=11><label for="rott">Pivoter dans le sens antihorraire</label></button><br/>
+                    <button><input type="radio" id="dellc" name="mode" value=12><label for="dellc">Supprimer des lignes ou des colonnes</label></button><br/>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div id="editor">
+                <div id="corner"></div>
+                <div id="top-buttons"></div>
+                <div id="left-buttons"></div>
+                <div id="map"></div>
+            </div>
+        </main>
+        <div id="popup">
+            <div id="export_popup" class="one_popup">
+                <h3>Exporter en texte</h3>
+                <textarea id="export_textarea"></textarea>
+                <div class="popup_buttons">
+                    <button id="export_copy_button">Copier dans le presse-papier</button>
+                    <button id="export_close">Fermer</button>
+                </div>
+            </div>
+            <div id="url_export_popup" class="one_popup">
+                <h3>Exporter en url</h3>
+                <a id="url_export_link"></a>
+                <div class="popup_buttons">
+                    <button id="url_export_copy_button">Copier dans le presse-papier</button>
+                    <button id="url_export_close">Fermer</button>
+                </div>
+            </div>
+            <div id="import_popup" class="one_popup">
+                <h3>Importer du texte</h3>
+                <textarea id="import_textarea"></textarea>
+                <div class="popup_buttons">
+                    <button id="import_button">Importer</button>
+                    <button id="import_close">Annuler</button>
+                </div>
+            </div>
+            <div id="free_mode_popup" class="one_popup">
+                <div id="free_selector">
+                    <div class="case case1" style="top:0px; left: 0px;"></div>
+                    <div class="case case0" style="top:0px; left: 100px;"></div>
+                    <div class="case case2" style="top:0px; left: 200px;"></div>
+                    <div class="case case3" style="top:100px; left: 0px;"></div>
+                    <div class="case case4" style="top:100px; left: 100px;"></div>
+                    <div class="case case5" style="top:100px; left: 200px;"></div>
+                    <div class="case case7" style="top:200px; left: 0px;"></div>
+                    <div class="case case6" style="top:200px; left: 100px;"></div>
+                    <div class="case case8" style="top:200px; left: 200px;"></div>
+                </div>
+                <div class="popup_buttons">
+                    <button id="free_cancel">Annuler</button>
+                </div>
+            </div>
+        </div>
+        <link rel="stylesheet" href="style.css"/>
+        <script src="menu.js"></script>
+        <script src="editor.js"></script>
+    </body>
+</html>

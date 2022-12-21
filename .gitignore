@@ -1,7 +1,4 @@
 OLD_WEB
 __pycache__
 .vscode
-map_creator/include
-map_creator/build_windows
-map_creator/build_OSX
-map_creator/build_UNIX
+map_creator

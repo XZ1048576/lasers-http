@@ -30,8 +30,13 @@ html body div.img_move{
 
 
 html body div#main-scroll{
-    overflow: scroll;
+    overflow: auto;
     display: inline-block;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+html body div#main-scroll::-webkit-scrollbar{
+    display: none;
 }
 html body div#main-scroll div#main{
     position: relative;
@@ -184,7 +189,12 @@ html body div#main-scroll div#bonus-infos button#cancel_bonus{
 html body div#left{
     display: inline-block;
     position: absolute;
-    overflow-y: scroll;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+html body div#left::-webkit-scrollbar{
+    display: none;
 }
 html body div#left div#scores div.score{
     height: 100px;

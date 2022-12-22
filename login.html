@@ -4,15 +4,16 @@
         <title>Lasers</title>
     </head>
     <body>
-        <h1>Lasers</h1>
-        <div>
-            Pseudo:<input id="pseudo"/>
+        <h1 class="center">Lasers</h1>
+        <div class="center">
+            <input id="pseudo" placeholder="Pseudo"/>
         </div>
-        <div>
-            Couleur:<input id="color" type="color"/>
+        <div class="center">
+            Couleur du pion:<br/>
+            <input id="color" type="color"/>
         </div>
-        <div>
-            Partie:<select id="type">
+        <div id="type_selector_div" class="center">
+            <select id="type">
                 <option value="alea">Partie rapide</option>
                 <option value="perso">Cr&eacute;er une partie personalis&eacute;e</option>
                 <option value="rej">Rejoindre une partie personalis&eacute;e</option>
@@ -20,30 +21,63 @@
         </div>
         <div id="alea">
             <h2>Partie Rapide</h2>
+            <p>
+                Une partie rapide vous permet de jouer sans savoir contre qui. La partie se jouera &agrave; 4 joueurs sur la map par d&eacute;faut.
+            </p>
             <button id="alea_start">D&eacute;marer</button>
             <script>
-                document.getElementById("alea_start").onclick=function(){
+                function start(color,pseudo){
                     let url="/?partie=auto&pseudo=";
-                    url+=encodeURIComponent(document.getElementById("pseudo").value);
-                    url+="&color=";
-                    url+=document.getElementById("color").value.slice(1,7);
+                    url+=pseudo;
+                    url+="&color="+color;
                     document.location=url;
+                }
+                document.getElementById("alea_start").onclick=function(){
+                    let color=document.getElementById("color").value.slice(1,7);
+                    let pseudo=encodeURIComponent(document.getElementById("pseudo").value);
+                    fetch("/check_color?color="+color+"&partie=auto").then(response => {
+                        switch(response.headers.get("Result")){
+                            case "Ok":
+                                fetch("/check_pseudo?pseudo="+pseudo+"&partie=auto").then(response => {
+                                    switch(response.headers.get("Result")){
+                                        case "Ok":
+                                            start(color,pseudo);
+                                            break;
+                                        case "Used":
+                                            alert("Le pseudo que vous avez choisi est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                            break;
+                                    }
+                                });
+                                break;
+                            case "Invalid":
+                                alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                                break;
+                            case "Used":
+                                alert("La couleur que vous avez choisie ou une couleur trop ressemblante est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                break;
+                        }
+                    });
                 }
             </script>
         </div>
         <div id="perso">
             <h2>Cr&eacute;er une partie personalis&eacute;e</h2>
+            <p>
+                Cr&eacute;ez une partie personalis&eacute;e pour ensuite y inviter vos amis
+            </p>
+            <p id="upload_info">
+                T&eacute;l&eacute;chargez votre map ci-dessous ou jouez sur la map par d&eacute;faut. Vous pouvez cr&eacute;er votre map <a href="/lasers_map_creator/">ici</a>.
+            </p>
             <input type="file" id="file" accept=".lama"/><br/>
             <button id="perso_create">Cr&eacute;er</button>
             <script>
-                document.getElementById("perso_create").onclick=function(){
+                function create(color){
                     let url="/?partie=new&pseudo=";
                     url+=encodeURIComponent(document.getElementById("pseudo").value);
                     url+="&color=";
-                    url+=document.getElementById("color").value.slice(1,7);
-                    if(document.getElementById("file").files[0]){
+                    url+=color;
+                    if(document.getElementById("file").files[0] || map){
                         const Http=new XMLHttpRequest();
-                        var reader=new FileReader();
                         Http.onreadystatechange=function(){
                             if(Http.readyState===4){
                                 if(Http.status===200){
@@ -51,48 +85,103 @@
                                     url+=Http.responseText;
                                     document.location=url;
                                 } else if(Http.status===422){
-                                    alert("Le fichier fourni n'est pas valide.<br/><a href=\"/map_creator.exe\">Cliquez ici</a> pour télécharger le programme de création de map.")
+                                    alert("La map fournie n'est pas valide.")
                                 }
                             }
                         }
-                        reader.onload=function(e){
+                        if(map){
                             Http.open("POST","/perso_map");
-                            Http.send(e.target.result);
+                            Http.send(map);
+                        }else{
+                            var reader=new FileReader();
+                            reader.onload=function(e){
+                                Http.open("POST","/perso_map");
+                                Http.send(e.target.result);
+                            }
+                            reader.readAsText(document.getElementById("file").files[0]);
                         }
-                        reader.readAsText(document.getElementById("file").files[0]);
                     }else{
                         document.location=url;
                     }
+                }
+                document.getElementById("perso_create").onclick=function(){
+                    let color=document.getElementById("color").value.slice(1,7);
+                    fetch("/check_color?color="+color).then(response => {
+                        switch(response.headers.get("Result")){
+                            case "Ok":
+                                create(color);
+                                break;
+                            case "Invalid":
+                                alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                                break;
+                        }
+                    });
                 }
             </script>
         </div>
         <div id="rej">
             <h2>Rejoindre une partie personalis&eacute;e</h2>
+            <p>
+                Entrez le code envoy&eacute; par votre ami pour rejoindre sa partie.
+            </p>
             <input id="rej_gamename"/>
             <button id="rej_start">Rejoindre</button>
             <script>
-                document.getElementById("rej_start").onclick=function(){
-                    let url="/?partie=rej_";
-                    url+=document.getElementById("rej_gamename").value;
-                    url+="&pseudo=";
-                    url+=encodeURIComponent(document.getElementById("pseudo").value);
-                    url+="&color=";
-                    url+=document.getElementById("color").value.slice(1,7);
+                function join(color,partie,pseudo){
+                    let url="/?partie=rej_"+partie+"&pseudo=";
+                    url+=pseudo;
+                    url+="&color="+color;
                     document.location=url;
+                }
+                document.getElementById("rej_start").onclick=function(){
+                    let color=document.getElementById("color").value.slice(1,7);
+                    let partie=document.getElementById("rej_gamename").value;
+                    fetch("/check_color?color="+color+"&partie="+partie).then(response => {
+                        switch(response.headers.get("Result")){
+                            case "Ok":
+                                let pseudo=encodeURIComponent(document.getElementById("pseudo").value);
+                                fetch("/check_pseudo?pseudo="+pseudo+"&partie="+partie).then(response =>{
+                                    switch(response.headers.get("Result")){
+                                        case "Ok":
+                                            join(color,partie,pseudo);
+                                            break;
+                                        case "Used":
+                                            alert("Le pseudo que vous avez choisi est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                            break;
+                                    }
+                                })
+                                break;
+                            case "Invalid":
+                                alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                                break;
+                            case "Used":
+                                alert("La couleur que vous avez choisie ou une couleur trop ressemblante est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                break;
+                        }
+                    });
                 }
             </script>
         </div>
+        <link rel="stylesheet" href="login.css">
+        <link rel="stylesheet" href="title_font.css">
         <script>
-            ["alea","perso","rej"].forEach(element => {
-                document.getElementById(element).style.display="none"
-            })
-            document.getElementById(document.getElementById("type").value).style.display="block"
-            document.getElementById("type").onchange=function(){
+            let map=document.location.hash.slice(1)
+            if(map){
+                ["alea","rej","type_selector_div","file","upload_info"].forEach(element => {
+                    document.getElementById(element).style.display="none"
+                })
+            }else{
                 ["alea","perso","rej"].forEach(element => {
                     document.getElementById(element).style.display="none"
                 })
                 document.getElementById(document.getElementById("type").value).style.display="block"
-            };
+                document.getElementById("type").onchange=function(){
+                    ["alea","perso","rej"].forEach(element => {
+                        document.getElementById(element).style.display="none"
+                    })
+                    document.getElementById(document.getElementById("type").value).style.display="block"
+                };
+            }
         </script>
     </body>
 </html>

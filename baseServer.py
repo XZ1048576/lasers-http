@@ -1,23 +1,35 @@
 import socket
 from threading import Thread
+from http.server import HTTPStatus
+from mimetypes import guess_type
+codes={}
+for x in HTTPStatus:
+    codes[x.value]=x.name.encode()
 class Server(Thread):
     def __init__(self,a=None):
         if a is None:
-            a=socket.socket()
+            a=socket.socket(socket.AF_INET6)
+            a.setsockopt(socket.IPPROTO_IPV6,socket.IPV6_V6ONLY,0)
             a.bind(("",80))
             a.listen(50)
         self.a=a
         Thread.__init__(self)
-    def redirect(self,path,version):
-        self.cnx.send(version+b" 302 Found\r\nLocation: "+path+b"\r\n\r\n")
-        self.cnx.close()
+    def redirect(self,path):
+        self.response(302,{b"Location":path})
     def run(self):
-        self.cnx,infos=self.a.accept()
+        try:
+            self.cnx,infos=self.a.accept()
+        except:
+            type(self)(self.a).start()
+            return
         type(self)(self.a).start()
         try:
             request=self.cnx.recv(1024)
             while not b"\r\n\r\n" in request:
-                request+=self.cnx.recv(1024)
+                folow=self.cnx.recv(1024)
+                if folow==b"":
+                    return
+                request+=folow
             request=request.split(b"\n")
             if len(request[0].split(b" "))!=3:
                 self.default_response(b"HTTP/1.1",400)
@@ -54,7 +66,9 @@ class Server(Thread):
             body=request.split(b"\r\n\r\n")[1]
             if path.endswith(b"/"):
                 path+=b"index.html"
-            self.request(method,path,parameters,headers,body,version)
+            self.version=version
+            self.file_type=guess_type(path.decode())[0]
+            self.request(method,path,parameters,headers,body)
         except Exception as e:
             error="Traceback (most recent call last):\n"
             a=e.__traceback__
@@ -72,8 +86,25 @@ class Server(Thread):
             error+=str(e)
             self.cnx.send(version+b" 500 Internal Server Error\r\n\r\n"+error.encode())
             self.cnx.close()
-    def request(self,method,path,parameters,headers,body,version):
+    def request(self,method,path,parameters,headers,body):
         raise NotImplementedError
+    def response(self,status,headers,body=b"",close=True):
+        response_=self.version+b" "+str(status).encode()+b" "+codes[status]+b"\r\n"
+        if body:
+            if not b"Content-Length" in headers:
+                headers[b"Content-Length"]=str(len(body)).encode()
+            if not b"Content-Type" in headers and self.file_type:
+                headers[b"Content-Type"]=self.file_type.encode()
+        for header in headers:
+            response_+=header
+            response_+=b": "
+            response_+=headers[header]
+            response_+=b"\r\n"
+        response_+=b"\r\n"
+        response_+=body
+        self.cnx.send(response_)
+        if close:
+            self.cnx.close()
 def url_decode(url):
     url=list(url)
     i=0

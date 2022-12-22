@@ -2,58 +2,88 @@
 <html>
     <head>
         <title>Lasers</title>
-        <style>
-            html body div#joueurs div.joueur{
-                width: 300px;
-                height: 100px;
-                font-size: 30px;
-                text-align: center;
-                margin-top: 35px;
-            }
-        </style>
     </head>
     <body>
-        <h1>Partie personnalis&eacute;e</h1>
-        <p>
-            Pour inviter un ami sur cette partie, envoyez lui ce code: <span id="partie"></span>
+        <h1 class="center">Lasers</h1>
+        <h2 class="center" id="subtitle">Partie personnalis&eacute;e</h2>
+        <p class="center" id="invite">
+            Pour inviter un ami sur cette partie, envoyez lui ce code:<br/> <span id="partie"></span> <button id="copy_button">Copier</button>
         </p>
         <div id="joueurs"></div>
-        <button id="start" style="display: none">Commencer</button>
+        <div id="disconnected" class="center" style="display: none">
+            <h3>Vous avez &eacute;t&eacute; d&eacute;connect&eacute; de la partie &#x1f622;</h3>
+            <a href="/">Retour &agrave; l'accueil</a>
+        </div>
+        <button id="start" style="display: none; margin: 12px auto 0;" class="center">Commencer</button>
         <script>
             const Partie="##partie##";
             const Player="##player##";
+            if(window.isSecureContext){
+                document.getElementById("copy_button").addEventListener("click",function(){
+                    navigator.clipboard.writeText(Partie);
+                })
+            }else{
+                document.getElementById("copy_button").style.display="none";
+            }
             document.getElementById("partie").innerText=Partie;
             document.location.search.split("?")[1].split("&").forEach(param => {
                 if(param==="partie=new"){
-                    document.getElementById("start").style.display="inline-block"
+                    document.getElementById("start").style.display="block"
                     document.getElementById("start").onclick=function(){
                         fetch("/start?partie="+Partie+"&player="+Player);
                     }
                 }
             });
             let checksum="0";
-            function wait(){
-                fetch("/wait?partie="+Partie+"&player="+Player+"&checksum="+checksum).catch(wait).then(reponse => {
-                    if(reponse.headers.get("Type")=="changelist"){
-                        reponse.text().then(text => {
-                            checksum=text.split("%~&0%~&!")[1]
-                            document.getElementById("joueurs").innerHTML="";
-                            text.split("%~&0%~&!")[0].split("%~&1%~&!").forEach(joueur => {
-                                let ctn='<div style="background-color: ';
-                                ctn+=joueur.split("%~&2%~&!")[1];
-                                ctn+='" class="joueur">';
-                                ctn+=joueur.split("%~&2%~&!")[0];
-                                ctn+="</div>";
-                                document.getElementById("joueurs").innerHTML+=ctn;
-                            });
-                            wait();
-                        });
-                    } else {
-                        document.location="/?partie="+Partie+"&player="+Player;
+            if(Partie==="auto"){
+                document.getElementById("subtitle").innerText="Partie rapide";
+                document.getElementById("invite").innerText="En attente d'autres joueurs...";
+            }
+            wscnx=new WebSocket(document.location.origin.replace("http","ws")+"/pec?partie="+Partie+"&player="+Player);
+            wscnx.onmessage=function(message){
+                document.getElementById("joueurs").innerHTML="";
+                first=false;
+                message.data.split("%~&0%~&!").forEach(joueur=>{
+                    if(joueur=="first"){
+                        first=true;
+                    }else{
+                        let ctn='<div style="background-color: ';
+                        ctn+=joueur.split("%~&1%~&!")[1];
+                        ctn+='" class="joueur">';
+                        ctn+=joueur.split("%~&1%~&!")[0];
+                        ctn+="</div>";
+                        document.getElementById("joueurs").innerHTML+=ctn;
                     }
                 });
+                if(first){
+                    document.getElementById("start").style.display="block";
+                    document.getElementById("start").onclick=function(){
+                        fetch("/start?partie="+Partie+"&player="+Player);
+                    }
+                }else{
+                    document.getElementById("start").style.display="none";
+                    document.getElementById("start").onclick=null;
+                }
             }
-            wait();
+            wscnx.onclose=function(e){
+                let partie=Partie;
+                switch(e.code){
+                    case 4001:
+                        partie=e.reason; //auto
+                    case 4000:
+                        document.location="/?partie="+partie+"&player="+Player;
+                        break;
+                    default:
+                        document.getElementById("invite").style.display="none";
+                        document.getElementById("joueurs").style.display="none";
+                        document.getElementById("disconnected").style.display="block";
+                        document.getElementById("start").style.display="none";
+                        break;
+                }
+            }
         </script>
+        <link rel="stylesheet" href="waiting.css">
+        <link rel="stylesheet" href="login.css">
+        <link rel="stylesheet" href="title_font.css">
     </body>
 </html>

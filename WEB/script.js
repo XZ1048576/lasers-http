@@ -1,6 +1,6 @@
-let waits=0;
-const partie="##partie##";
+const PARTIE="##partie##";
 const PLAYER="##player##";
+let wscnx=null;
 window.addEventListener("resize",function(){
     document.getElementById("main-scroll").style.maxWidth=(window.innerWidth-300)+"px";
     document.getElementById("main-scroll").style.maxHeight=window.innerHeight+"px";
@@ -34,13 +34,7 @@ document.getElementById("control").onclick=function(target){
             key=6;
     }
     if(Number.isInteger(key)){
-        fetch("/play?coup="+key+"&partie="+partie+"&player="+PLAYER).then(reponse => {
-            if(reponse.status===409){
-                reponse.text().then(error =>{
-                    alert(error)
-                });
-            }
-        });
+        wscnx.send("p"+key);
     }
 }
 function CloseBonus(){
@@ -73,7 +67,6 @@ document.getElementById("bonus").onclick=function(target){
             document.getElementById("bonus-infos").style="display: block";
             document.getElementById("add_mirror_info").style="display: block";
             document.getElementById("jeu").onclick=function(click){
-                no=0;
                 x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
                 y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
                 if(document.getElementById("mirror_dir_/").checked){
@@ -84,16 +77,7 @@ document.getElementById("bonus").onclick=function(target){
                     alert("Choisissez d'abord le sens du mirroir");
                     return;
                 }
-                console.log(x,y,dir,no);
-                if(no!==null){
-                    fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
-                        if(reponse.status===409){
-                            reponse.text().then(error =>{
-                                alert(error)
-                            });
-                        }
-                    });
-                }
+                wscnx.send("b0 "+x+" "+y+" "+dir);
                 CloseBonus();
             }
             break;
@@ -105,13 +89,7 @@ document.getElementById("bonus").onclick=function(target){
                 x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
                 y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
                 dir=0;
-                fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
-                    if(reponse.status===409){
-                        reponse.text().then(error =>{
-                            alert(error)
-                        });
-                    }
-                });
+                wscnx.send("b1 "+x+" "+y+" 0");
                 CloseBonus();
             }
             break;
@@ -125,7 +103,6 @@ document.getElementById("bonus").onclick=function(target){
                 mirror.innerHTML='<div class="move_obj"></div>';
             });
             document.getElementById("jeu").onclick=function(click){
-                no=2;
                 x=click.pageX+document.getElementById("main-scroll").scrollLeft;
                 y=click.pageY+document.getElementById("main-scroll").scrollTop;
                 let hd=x%100>y%100;
@@ -141,13 +118,7 @@ document.getElementById("bonus").onclick=function(target){
                 }
                 x=Number.parseInt(x/100)-3;
                 y=Number.parseInt(y/100)-3;
-                fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
-                    if(reponse.status===409){
-                        reponse.text().then(error =>{
-                            alert(error)
-                        });
-                    }
-                });
+                wscnx.send("b2 "+x+" "+y+" "+dir);
                 CloseBonus();
             }
             break;
@@ -155,17 +126,9 @@ document.getElementById("bonus").onclick=function(target){
             document.getElementById("bonus-infos").style="display: block";
             document.getElementById("turn_mirror_info").style="display: block";
             document.getElementById("jeu").onclick=function(click){
-                no=3;
                 x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
                 y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
-                dir=0;
-                fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
-                    if(reponse.status===409){
-                        reponse.text().then(error =>{
-                            alert(error)
-                        });
-                    }
-                });
+                wscnx.send("b3 "+x+" "+y+" 0");
                 CloseBonus();
             }
             break;
@@ -174,7 +137,6 @@ document.getElementById("bonus").onclick=function(target){
             document.getElementById("move_cible_info").style="display: block";
             document.getElementsByClassName("cible")[0].innerHTML='<div class="move_obj"></div>';
             document.getElementById("jeu").onclick=function(click){
-                no=4;
                 x=click.pageX+document.getElementById("main-scroll").scrollLeft;
                 y=click.pageY+document.getElementById("main-scroll").scrollTop;
                 let hd=x%100>y%100;
@@ -190,49 +152,33 @@ document.getElementById("bonus").onclick=function(target){
                 }
                 x=Number.parseInt(x/100)-3;
                 y=Number.parseInt(y/100)-3;
-                fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
-                    if(reponse.status===409){
-                        reponse.text().then(error =>{
-                            alert(error)
-                        });
-                    }
-                });
+                wscnx.send("b4 "+x+" "+y+" "+dir);
                 CloseBonus();
             }
             break;
         case "2play":
-            fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no=5&x=0&y=0&dir=0").then(reponse => {
-                if(reponse.status===409){
-                    reponse.text().then(error =>{
-                        alert(error)
-                    });
-                }
-            });
+            wscnx.send("b5 0 0 0");
             break;
         case "add_wood":
             document.getElementById("bonus-infos").style="display: block";
             document.getElementById("add_wood_info").style="display: block";
             document.getElementById("jeu").onclick=function(click){
-                no=6;
                 x=Number.parseInt((click.pageX+document.getElementById("main-scroll").scrollLeft)/100)-3;
                 y=Number.parseInt((click.pageY+document.getElementById("main-scroll").scrollTop)/100)-3;
-                dir=0;
-                fetch("/bonus?partie="+partie+"&player="+PLAYER+"&no="+no+"&x="+x+"&y="+y+"&dir="+dir).then(reponse => {
-                    if(reponse.status===409){
-                        reponse.text().then(error =>{
-                            alert(error)
-                        });
-                    }
-                });
+                wscnx.send("b6 "+x+" "+y+" 0");
                 CloseBonus();
             }
             break;
     }
 }
 document.getElementById("cancel_bonus").onclick=CloseBonus;
-function wait(){
-    fetch("/wait?no="+waits+"&partie="+partie+"&player="+PLAYER).catch(wait).then(function(reponse){
-        reponse.text().then(function(text){
+function connect(){
+    wscnx=new WebSocket(document.location.origin.replace("http","ws")+"/game?partie="+PARTIE+"&player="+PLAYER);
+    wscnx.onmessage=function(message){
+        if(message.data.startsWith("e")){
+            alert(message.data.slice(1));
+        } else {
+            let text=message.data.slice(1);
             let lines=text.split("%~&0%~&!")[0].split("#");
             let height=lines.length;
             let width=lines[0].split("@").length;
@@ -287,11 +233,18 @@ function wait(){
                 document.getElementById("win").style="display: block;";
                 document.body.parentElement.style="background-color:"+text.split("%~&0%~&!")[2].split("%~&3%~&!")[1]+";";
                 document.getElementById("winner_pseudo").innerText=text.split("%~&0%~&!")[2].split("%~&3%~&!")[0];
-            } else {
-                waits+=1;
-                wait();
+                wscnx.close(1000);
             }
-        });
-    });
+        }
+    }
+    wscnx.onclose=function(e){
+        if(e.code!=1000){
+            console.log("reconnecting");
+            setTimeout(connect,5000);
+        }
+    }
+    wscnx.onerror=function(e){
+        wscnx.close(1002);
+    }
 }
-wait();
+connect();

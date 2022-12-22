@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'zippo';
+    src: url('/Zippo.ttf');
+}
+h1{
+    font-size: 100px;
+    font-family: 'zippo';
+    color: red;
+}

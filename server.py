@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 import socket
 import ssl
 import baseServer
@@ -213,10 +214,17 @@ class Server(baseServer.Server):
                         self.response(422,{})
                 else:
                     self.response(422,{})
+            elif path==b"/stat":
+                self.response(200,{},f"{len(parties)} partie(s) en cours".encode())
             else:
                 try:
                     with open("./WEB/"+path.decode(),"rb") as f:
-                        self.response(200,{},f.read())
+                        headers={}
+                        if path.endswith(b'.html'):
+                            headers[b'Content-Type']=b'text/html; charset=utf-8';
+                        elif path.endswith(b'.js'):
+                            headers[b'Content-Type']=b'application/javascript; charset=utf-8';
+                        self.response(200,headers,f.read())
                         return
                 except FileNotFoundError:
                     self.response(404,{})
@@ -256,15 +264,15 @@ parties={}
 parties_pec={}
 maps={}
 Server().start()
-a=socket.socket(socket.AF_INET6)
-a.setsockopt(socket.IPPROTO_IPV6,socket.IPV6_V6ONLY,0)
-a.bind(("",443))
-a.listen(50)
-a=ssl.wrap_socket(a,
-                  keyfile="lasers.key",
-                  certfile="lasers.crt",
-                  server_side=True)
-Server(a).start() #https
+#a=socket.socket(socket.AF_INET6)
+#a.setsockopt(socket.IPPROTO_IPV6,socket.IPV6_V6ONLY,0)
+#a.bind(("",443))
+#a.listen(50)
+#a=ssl.wrap_socket(a,
+#                  keyfile="lasers.key",
+#                  certfile="lasers.crt",
+#                  server_side=True)
+#Server(a).start() #https
 DeleteOldParties().start()
 while 1:
     pass

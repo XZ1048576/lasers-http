@@ -2,6 +2,7 @@ import socket
 from threading import Thread
 from http.server import HTTPStatus
 from mimetypes import guess_type
+from time import strftime
 codes={}
 for x in HTTPStatus:
     codes[x.value]=x.name.encode()
@@ -10,7 +11,7 @@ class Server(Thread):
         if a is None:
             a=socket.socket(socket.AF_INET6)
             a.setsockopt(socket.IPPROTO_IPV6,socket.IPV6_V6ONLY,0)
-            a.bind(("",80))
+            a.bind(("",34080))
             a.listen(50)
         self.a=a
         Thread.__init__(self)
@@ -84,8 +85,10 @@ class Server(Thread):
             error+=type(e).__name__
             error+=": "
             error+=str(e)
-            self.cnx.send(version+b" 500 Internal Server Error\r\n\r\n"+error.encode())
+            self.cnx.send(version+b" 500 Internal Server Error\r\n\r\n<h1>Erreur 500</h1><h2>Une erreur est survenue.</h2>")
             self.cnx.close()
+            with open('error.log','a') as error_log:
+                error_log.write(strftime("%Y-%m-%d %H:%M:%S UTC%z")+"\n"+error+"\n\n")
     def request(self,method,path,parameters,headers,body):
         raise NotImplementedError
     def response(self,status,headers,body=b"",close=True):

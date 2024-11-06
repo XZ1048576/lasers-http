@@ -1,4 +1,7 @@
+lasers.crt
+lasers.key
 OLD_WEB
 __pycache__
 .vscode
 map_creator
+error.log

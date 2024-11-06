@@ -6,7 +6,7 @@ body{
     max-width: 600px;
     border-radius: 40px;
     margin: 50px auto;
-    padding:0px 20px 40px;
+    padding:1px 20px 40px;
 }
 .center{
     text-align: center;
@@ -47,4 +47,16 @@ select{
         5px 5px;
     background-repeat: no-repeat;
     background-color: #fffa;
+}
+footer{
+    margin-top: 30px;
+    text-align: center;
+}
+footer a{
+    margin: 0px 20px;
+    padding: 0px 10px;
+    border-radius: 15px;
+    background-color: #0000ff80;
+    text-decoration: none;
+    color: #ff0;
 }

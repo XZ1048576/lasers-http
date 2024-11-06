@@ -637,4 +637,3 @@ class Joueur:
         self.cash=cash
     def add_cash(self,cash):
         self.cash+=cash
-    

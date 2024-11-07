@@ -91,6 +91,7 @@ class Websocket(Thread):
                     if not self.closing:
                         self._send(data,8)
                     self.cnx.close()
+                    self.cnx=None
                     if self.onclose:
                         if len(data)>=2:
                             code=int.from_bytes(data[:2],"big")
@@ -99,7 +100,6 @@ class Websocket(Thread):
                             code=1005
                             reason=b""
                         self.onclose((code,reason),self)
-                    self.cnx=None
                 elif cmd==9:
                     self._send(data,10)
                 elif cmd==10 and data==ping:

@@ -215,7 +215,7 @@ class Server(baseServer.Server):
                 else:
                     self.response(422,{})
             elif path==b"/stat":
-                self.response(200,{},f"{len(parties)} partie(s) en cours".encode())
+                self.response(200,{b'Content-Type':b'text/plain; charset=utf-8'},f"{len(parties)} partie(s) en cours\n{parties_finies} partie(s) terminées".encode())
             else:
                 try:
                     with open("./WEB/"+path.decode(),"rb") as f:
@@ -251,6 +251,7 @@ class Server(baseServer.Server):
 
 class DeleteOldParties(Thread):
     def run(self):
+        global parties_finies
         while 1:
             wait(3600)
             to_del=[]
@@ -259,8 +260,10 @@ class DeleteOldParties(Thread):
                     to_del.append(partie)
             for x in to_del:
                 del parties[x]
+                parties_finies+=1
 
 parties={}
+parties_finies=0
 parties_pec={}
 maps={}
 Server().start()

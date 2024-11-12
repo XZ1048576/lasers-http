@@ -277,5 +277,3 @@ Server().start()
 #                  server_side=True)
 #Server(a).start() #https
 DeleteOldParties().start()
-while 1:
-    pass

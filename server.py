@@ -67,10 +67,10 @@ def index(params):
                     parties_pec[b"auto"].name=name
                     parties[name]=parties_pec[b"auto"].make()
                     del parties_pec[b"auto"]
-                    return "redirect",b"/?partie="+name+b"&player="+player.id
+                    return "redirect",b"/?partie="+name+b"&player="+player.id.encode()
                 with open("./waiting.html","rb") as f:
                     resp=f.read()
-                resp=resp.replace(b"##player##",player.id)
+                resp=resp.replace(b"##player##",player.id.encode())
                 resp=resp.replace(b"##partie##",b"auto")
                 return 200,resp
             else:

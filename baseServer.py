@@ -85,7 +85,7 @@ class Server(Thread):
             error+=type(e).__name__
             error+=": "
             error+=str(e)
-            self.cnx.send(version+b" 500 Internal Server Error\r\n\r\n<h1>Erreur 500</h1><h2>Une erreur est survenue.</h2>")
+            self.cnx.send(version+b" 500 Internal Server Error\r\nContent-Type: text/html\r\n\r\n<h1>Erreur 500</h1><h2>Une erreur est survenue.</h2>")
             self.cnx.close()
             with open('error.log','a') as error_log:
                 error_log.write(strftime("%Y-%m-%d %H:%M:%S UTC%z")+"\n"+error+"\n\n")

@@ -37,9 +37,13 @@ class Websocket(Thread):
                         h=b""
                 except ConnectionResetError: #connection lost
                     self.cnx=None
+                    if self.onclose!=None:
+                        self.onclose((1006,b""),self)
                     break
                 if h==b"": #connection lost too
                     self.cnx=None
+                    if self.onclose!=None:
+                        self.onclose((1006,b""),self)
                     break
                 if h[1]&0x7f<126:
                     data_len=h[1]&0x7f
@@ -47,6 +51,8 @@ class Websocket(Thread):
                     data_len=cnx.recv(2 if h[1]&0x7f==126 else 8)
                     if data_len==b"": #connection lost
                         self.cnx=None
+                        if self.onclose!=None:
+                            self.onclose((1006,b""),self)
                         break
                     data_len=int.from_bytes(data_len,"big")
                 if h[1]&0x80: #mask
@@ -61,6 +67,8 @@ class Websocket(Thread):
                         recv_data=self.cnx.recv(data_len-len(data))
                     if recv_data==b"": #connection lost
                         self.cnx=None
+                        if self.onclose!=None:
+                            self.onclose((1006,b""),self)
                         break
                     data+=recv_data
                 if len(data)<data_len:
@@ -74,6 +82,8 @@ class Websocket(Thread):
                     if recieving==None:
                         self.cnx.close()
                         self.cnx=None
+                        if self.onclose!=None:
+                            self.onclose((1006,b""),self)
                         break
                     else:
                         recieving[1]+=data
@@ -107,6 +117,8 @@ class Websocket(Thread):
                 elif cmd!=0: #unknown
                     self.cnx.close()
                     self.cnx=None
+                    if self.onclose!=None:
+                        self.onclose((1006,b""),self)
             self.offline_time=1
             if self.ondisconnect!=None:
                 self.ondisconnect()

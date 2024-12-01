@@ -604,7 +604,6 @@ class Ppec:
         players=[player.pseudo+"%~&1%~&!"+player.color for player in self.players]
         return "%~&0%~&!".join(players)
     def send_info(self):
-        print(f"sending info of partie {self.name}")
         perso=not (self.name==None or self.name.startswith(b"auto"))
         for i,player in enumerate(self.players):
             first=perso and i==0

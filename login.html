@@ -26,34 +26,34 @@
             </p>
             <button id="alea_start">D&eacute;marer</button>
             <script>
-                function start(color,pseudo){
-                    let url="/?partie=auto&pseudo=";
-                    url+=pseudo;
-                    url+="&color="+color;
+                function start(token){
+                    let url="/?token=";
+                    url+=token;
                     document.location=url;
                 }
                 document.getElementById("alea_start").onclick=function(){
                     let color=document.getElementById("color").value.slice(1,7);
                     let pseudo=encodeURIComponent(document.getElementById("pseudo").value);
-                    fetch("/check_color?color="+color+"&partie=auto").then(response => {
-                        switch(response.headers.get("Result")){
-                            case "Ok":
-                                fetch("/check_pseudo?pseudo="+pseudo+"&partie=auto").then(response => {
-                                    switch(response.headers.get("Result")){
-                                        case "Ok":
-                                            start(color,pseudo);
-                                            break;
-                                        case "Used":
-                                            alert("Le pseudo que vous avez choisi est d\xe9j\xe0 utilis\xe9e dans cette partie");
-                                            break;
-                                    }
-                                });
+                    fetch("/check_data?color="+color+"&pseudo="+pseudo+"&partie=auto").then(response => {
+                        switch(response.status){
+                            case 409:
+                                switch(response.headers.get("X-Reason")){
+                                    case "Invalid-Color":
+                                        alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                                        break;
+                                    case "Used-Color":
+                                        alert("La couleur que vous avez choisie ou une couleur trop ressemblante est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                        break;
+                                    case "Used-Pseudo":
+                                        alert("Le pseudo que vous avez choisi est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                        break;
+                                }
                                 break;
-                            case "Invalid":
-                                alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                            case 204:
+                                start(response.headers.get("X-Token"));
                                 break;
-                            case "Used":
-                                alert("La couleur que vous avez choisie ou une couleur trop ressemblante est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                            default:
+                                alert('Une erreur s\'est produite');
                                 break;
                         }
                     });
@@ -71,11 +71,9 @@
             <input type="file" id="file" accept=".lama"/><br/>
             <button id="perso_create">Cr&eacute;er</button>
             <script>
-                function create(color){
-                    let url="/?partie=new&pseudo=";
-                    url+=encodeURIComponent(document.getElementById("pseudo").value);
-                    url+="&color=";
-                    url+=color;
+                function create(token){
+                    let url="/?token=";
+                    url+=token;
                     if(document.getElementById("file").files[0] || map){
                         const Http=new XMLHttpRequest();
                         Http.onreadystatechange=function(){
@@ -106,13 +104,27 @@
                 }
                 document.getElementById("perso_create").onclick=function(){
                     let color=document.getElementById("color").value.slice(1,7);
-                    fetch("/check_color?color="+color).then(response => {
-                        switch(response.headers.get("Result")){
-                            case "Ok":
-                                create(color);
+                    let pseudo=encodeURIComponent(document.getElementById("pseudo").value);
+                    fetch("/check_data?color="+color+"&pseudo="+pseudo+"&partie=new").then(response => {
+                        switch(response.status){
+                            case 409:
+                                switch(response.headers.get("X-Reason")){
+                                    case "Invalid-Color":
+                                        alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                                        break;
+                                    case "Used-Color":
+                                        alert("La couleur que vous avez choisie ou une couleur trop ressemblante est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                        break;
+                                    case "Used-Pseudo":
+                                        alert("Le pseudo que vous avez choisi est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                        break;
+                                }
                                 break;
-                            case "Invalid":
-                                alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                            case 204:
+                                create(response.headers.get("X-Token"));
+                                break;
+                            default:
+                                alert('Une erreur s\'est produite');
                                 break;
                         }
                     });
@@ -127,35 +139,35 @@
             <input id="rej_gamename"/>
             <button id="rej_start">Rejoindre</button>
             <script>
-                function join(color,partie,pseudo){
-                    let url="/?partie=rej_"+partie+"&pseudo=";
-                    url+=pseudo;
-                    url+="&color="+color;
+                function join(token){
+                    let url="/?token=";
+                    url+=token;
                     document.location=url;
                 }
                 document.getElementById("rej_start").onclick=function(){
                     let color=document.getElementById("color").value.slice(1,7);
                     let partie=document.getElementById("rej_gamename").value;
-                    fetch("/check_color?color="+color+"&partie="+partie).then(response => {
-                        switch(response.headers.get("Result")){
-                            case "Ok":
-                                let pseudo=encodeURIComponent(document.getElementById("pseudo").value);
-                                fetch("/check_pseudo?pseudo="+pseudo+"&partie="+partie).then(response =>{
-                                    switch(response.headers.get("Result")){
-                                        case "Ok":
-                                            join(color,partie,pseudo);
-                                            break;
-                                        case "Used":
-                                            alert("Le pseudo que vous avez choisi est d\xe9j\xe0 utilis\xe9e dans cette partie");
-                                            break;
-                                    }
-                                })
+                    let pseudo=encodeURIComponent(document.getElementById("pseudo").value);
+                    fetch("/check_data?color="+color+"&pseudo="+pseudo+"&partie="+partie).then(response => {
+                        switch(response.status){
+                            case 409:
+                                switch(response.headers.get("X-Reason")){
+                                    case "Invalid-Color":
+                                        alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                                        break;
+                                    case "Used-Color":
+                                        alert("La couleur que vous avez choisie ou une couleur trop ressemblante est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                        break;
+                                    case "Used-Pseudo":
+                                        alert("Le pseudo que vous avez choisi est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                                        break;
+                                }
                                 break;
-                            case "Invalid":
-                                alert("La couleur que vous avez choisie est interdite car elle ressemble trop \xe0 une couleur du jeu");
+                            case 204:
+                                join(response.headers.get("X-Token"));
                                 break;
-                            case "Used":
-                                alert("La couleur que vous avez choisie ou une couleur trop ressemblante est d\xe9j\xe0 utilis\xe9e dans cette partie");
+                            default:
+                                alert('Une erreur s\'est produite');
                                 break;
                         }
                     });

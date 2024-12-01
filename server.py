@@ -57,9 +57,11 @@ def index(params):
             return 200,resp
         else:
             return 404,b"Cette partie n'existe pas"
-    elif b"partie" in params and b"pseudo" in params and b"color" in params:
-        player=Joueur(params[b"pseudo"].decode("latin-1"),"#"+params[b"color"].decode())
-        if params[b"partie"]==b"auto":
+    elif b"token" in params and params[b'token'] in tokens:
+        partie,pseudo,color=tokens[params[b'token']]
+        del tokens[params[b'token']]
+        player=Joueur(pseudo.decode("latin-1"),"#"+color.decode())
+        if partie==b"auto":
             if b"auto" in parties_pec:
                 parties_pec[b"auto"].add_player(player)
                 if len(parties_pec[b"auto"])==4:
@@ -79,7 +81,7 @@ def index(params):
                 with open("./waiting.html","rb") as f:
                     resp=f.read().replace(b"##player##",player.id.encode()).replace(b"##partie##",b"auto")
                 return 200,resp
-        elif params[b"partie"]==b"new":
+        elif partie==b"new":
             name=create_game_code(False).encode()
             parties_pec[name]=Ppec()
             parties_pec[name].name=name
@@ -97,20 +99,13 @@ def index(params):
             ctn=ctn.replace(b"##partie##",name)
             ctn=ctn.replace(b"##player##",player.id.encode())
             return 200,ctn
-        elif params[b"partie"].startswith(b"rej_"):
-            name=params[b"partie"][4:]
-            if not name in parties_pec:
-                if name in parties:
-                    return 409,b"<html><body>Cette partie est d&eacute;j&agrave; commenc&eaccute;e.</body></html>"
-                else:
-                    return 409,b"<html><body>Cette partie n'existe pas.</body></html>"
-                return
-            if len(parties_pec[name])==parties_pec[name].max_players:
+        elif partie in parties_pec:
+            if len(parties_pec[partie])>=parties_pec[partie].max_players:
                 return 409,b"<html><body>Cette partie est compl&egrave;te.</body></html>"
-            parties_pec[name].add_player(player)
+            parties_pec[partie].add_player(player)
             with open("./waiting.html","rb") as f:
                 ctn=f.read()
-            ctn=ctn.replace(b"##partie##",name)
+            ctn=ctn.replace(b"##partie##",partie)
             ctn=ctn.replace(b"##player##",player.id.encode())
             return 200,ctn
         else:
@@ -188,30 +183,37 @@ class Server(baseServer.Server):
                     del parties_pec[parameters[b"partie"]]
                     self.response(204,{})
                     return
-            elif path==b"/check_color":
-                if b"color" in parameters:
-                    valid=False
-                    unused=True
+            elif path==b"/check_data":
+                if b"partie" in parameters and b"color" in parameters and b"pseudo" in parameters:
                     try:
                         color=parse_color(parameters[b"color"])
                     except:
-                        pass
+                        valid=False
                     else:
-                        if b"partie" in parameters and parameters[b"partie"] in parties_pec:
-                            unused=parties_pec[parameters[b"partie"]].check_color(color)
-                        valid=valid_color(color)
-                    self.response(204,{b"Result":(b"Ok" if unused else b"Used") if valid else b"Invalid"})
-                else:
-                    self.response(422,{})
-            elif path==b"/check_pseudo":
-                if b"pseudo" in parameters and b"partie" in parameters:
-                    if parameters[b"partie"] in parties_pec:
-                        unused=parties_pec[parameters[b"partie"]].check_pseudo(parameters[b"pseudo"].decode())
-                        self.response(204,{b"Result":b"Ok" if unused else b"Used"})
-                    elif parameters[b"partie"] == b"auto": # only if the game is creating
-                        self.response(204,{b"result":b"Ok"})
-                    else:
+                        if parameters[b"partie"] in parties_pec:
+                            color_unused=parties_pec[parameters[b"partie"]].check_color(color)
+                            color_valid=valid_color(color)
+                            pseudo_unused=parties_pec[parameters[b"partie"]].check_pseudo(parameters[b"pseudo"].decode())
+                            valid=True
+                        elif parameters[b"partie"] in (b"new",b"auto"): # only for the first player
+                            color_unused=True
+                            color_valid=valid_color(color)
+                            pseudo_unused=True
+                            valid=True
+                        else:
+                            valid=False
+                    if valid==False or len(parameters[b"color"])!=6:
                         self.response(422,{})
+                    elif color_valid==False:
+                        self.response(409,{b"X-Reason":b"Invalid-Color"})
+                    elif color_unused==False:
+                        self.response(409,{b"X-Reason":b"Used-Color"})
+                    elif pseudo_unused==False:
+                        self.response(409,{b"X-Reason":b"Used-pseudo"})
+                    else:
+                        token=generate_code(64).encode()
+                        tokens[token]=(parameters[b'partie'],parameters[b"pseudo"],parameters[b"color"])
+                        self.response(204,{b"X-Token":token})
                 else:
                     self.response(422,{})
             elif path==b"/stat":
@@ -266,6 +268,7 @@ parties={}
 parties_finies=0
 parties_pec={}
 maps={}
+tokens={}
 Server().start()
 #a=socket.socket(socket.AF_INET6)
 #a.setsockopt(socket.IPPROTO_IPV6,socket.IPV6_V6ONLY,0)
